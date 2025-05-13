@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body>
+
+    <main>
+      <div class="login-container">
+        <div class="logo">EasyBike</div>
+
+        <div class="login-form">
+          <h2>Acesse sua conta</h2>
+
+          <form id="loginForm">
+            <div class="input-group">
+              <label for="email">E-mail institucional</label>
+              <input type="email" id="email" name="email" placeholder="seu.email@instituicao.edu" required />
+            </div>
+
+            <div class="input-group">
+              <label for="password">Senha</label>
+              <input type="password" id="password" name="password" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="login-btn">Entrar</button>
+          </form>
+
+          <div class="footer-links">
+            <a href="#">Esqueceu sua senha?</a> •
+            <a href="cadastro.html">Cadastre-se</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("loginForm");
+
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          if (email === "teste@fatec.sp.gov.br" && password === "123456") {
+            alert("Login realizado com sucesso!");
+            window.location.href = "index.html";
+          } else {
+            alert("E-mail ou senha incorretos.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

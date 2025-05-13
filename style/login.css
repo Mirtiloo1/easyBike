@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "@fortawesome/fontawesome-free/css/all.css";
+:root {
+  --verde-principal: #00695c;
+  --verde-claro: #00897b;
+  --verde-hover: #004d40;
+  --branco: #ffffff;
+  --cinza-claro: #f3f3f3;
+  --cinza-texto: #555555;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--cinza-claro);
+    background-image: url('img/bike-pattern.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+.login-container {
+  background-color: var(--branco);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 107, 92, 0.2);
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  text-align: center;
+}
+
+.logo {
+  color: var(--verde-principal);
+  font-family: "Quicksand", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.login-form h2 {
+  color: var(--verde-principal);
+  margin-bottom: 30px;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--verde-principal);
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: var(--verde-claro);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.2);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--verde-principal);
+  color: var(--branco);
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background-color: var(--verde-hover);
+  transform: translateY(-2px);
+}
+
+.footer-links {
+  margin-top: 25px;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: var(--verde-claro);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--verde-principal);
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 30px 20px;
+    margin: 20px;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+}
