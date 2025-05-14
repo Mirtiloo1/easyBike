@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Easy Bike</title>
     <link rel="stylesheet" href="style/index.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
   </head>
   <body>
     <!-- NAVBAR em largura total -->
@@ -27,7 +30,7 @@
             </div>
           </li>
 
-          <li><a href="#">Como usar</a></li>
+          <li><a href="como-usar.html">Como usar</a></li>
           <li><a href="sobre.html">Sobre</a></li>
           <li><a href="map.html">Mapa</a></li>
         </ul>
@@ -39,7 +42,6 @@
         <div class="menu-toggle">
           <i class="fas fa-bars"></i>
         </div>
-
       </div>
     </nav>
 
@@ -145,18 +147,18 @@
 
     <script>
       // Menu mobile
-      document.addEventListener("DOMContentLoaded", function() {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navCenter = document.querySelector('.nav-center');
-        
-        menuToggle.addEventListener('click', () => {
-          navCenter.classList.toggle('active');
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
+
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
         });
 
         // Fechar menu ao clicar em links
-        document.querySelectorAll('.nav-center a').forEach(link => {
-          link.addEventListener('click', () => {
-            navCenter.classList.remove('active');
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
           });
         });
 
@@ -167,10 +169,10 @@
           const display = select.querySelector(".fake-select-display");
           const icon = select.querySelector(".select-icon");
 
-          display.addEventListener("click", function(e) {
+          display.addEventListener("click", function (e) {
             e.stopPropagation();
             select.classList.toggle("open");
-            
+
             fakeSelects.forEach((otherSelect) => {
               if (otherSelect !== select) {
                 otherSelect.classList.remove("open");
@@ -180,7 +182,7 @@
         });
 
         // Fechar ao clicar fora
-        document.addEventListener("click", function() {
+        document.addEventListener("click", function () {
           fakeSelects.forEach((select) => {
             select.classList.remove("open");
           });
