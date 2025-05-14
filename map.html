@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa</title>
+    <link rel="stylesheet" href="style/map.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- NAVBAR em largura total -->
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
+        </div>
+
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <div class="option">Praia Grande</div>
+              <div class="option">São Vicente</div>
+            </div>
+          </li>
+
+          <li><a href="#">Como usar</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button onclick="window.location.href='login.html'">Entrar</button>
+        </div>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-links">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Mapa</a></li>
+            <li><a href="como-usar.html">Como Usar</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Menu mobile
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
+
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
+        });
+
+        // Fechar menu ao clicar em links
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
+          });
+        });
+
+        // Fake Select
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          const icon = select.querySelector(".select-icon");
+
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            select.classList.toggle("open");
+
+            fakeSelects.forEach((otherSelect) => {
+              if (otherSelect !== select) {
+                otherSelect.classList.remove("open");
+              }
+            });
+          });
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener("click", function () {
+          fakeSelects.forEach((select) => {
+            select.classList.remove("open");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

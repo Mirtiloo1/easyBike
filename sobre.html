@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre</title>
+    <link rel="stylesheet" href="style/sobre.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- NAVBAR em largura total -->
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
+        </div>
+
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <div class="option">Praia Grande</div>
+              <div class="option">São Vicente</div>
+            </div>
+          </li>
+
+          <li><a href="como-usar.html">Como usar</a></li>
+          <li><a href="#">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button onclick="window.location.href='login.html'">Entrar</button>
+        </div>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero-section">
+      <div class="hero-content">
+        <h1>EasyBike: Mobilidade Inteligente para Estudantes</h1>
+        <p class="hero-subtitle">Pedalando rumo a um futuro mais acessível e sustentável</p>
+        <div class="hero-bike-icon">
+          <i class="fas fa-bicycle"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="about-container">
+      <section class="about-card card-highlight">
+        <div class="card-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="card-content">
+          <h2>O Que É o EasyBike?</h2>
+          <p>
+            O <strong>EasyBike</strong> é um sistema gratuito de empréstimo de
+            bicicletas voltado exclusivamente para estudantes. Inspirado em soluções
+            como o Bike Itaú, o projeto tem como missão facilitar o deslocamento de
+            quem mais precisa, oferecendo uma alternativa prática, ecológica e
+            acessível.
+          </p>
+        </div>
+      </section>
+
+      <section class="about-grid">
+        <div class="grid-card">
+          <div class="grid-icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h3>Por Que Criamos o EasyBike?</h3>
+          <ul>
+            <li>
+              <strong>Inclusão e Acesso:</strong> Ideal para alunos distantes de
+              pontos de ônibus ou sem condições de arcar com transporte diário.
+            </li>
+            <li>
+              <strong>Autonomia no Deslocamento:</strong> Permite acesso facilitado
+              a terminais, pontos e escolas.
+            </li>
+            <li>
+              <strong>Sustentabilidade:</strong> Promove o uso de transporte limpo e
+              hábitos saudáveis.
+            </li>
+          </ul>
+        </div>
+
+        <div class="grid-card">
+          <div class="grid-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3>Como Funciona o Sistema?</h3>
+          <ul>
+            <li>
+              <strong>Cadastro:</strong> Realizado com o e-mail institucional do
+              aluno.
+            </li>
+            <li><strong>Desbloqueio:</strong> Rápido e prático via QR Code.</li>
+            <li>
+              <strong>Estações:</strong> Localizadas em pontos estratégicos próximos
+              às instituições.
+            </li>
+          </ul>
+        </div>
+
+        <div class="grid-card">
+          <div class="grid-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Benefícios do EasyBike</h3>
+          <ul>
+            <li>Redução de custos com transporte</li>
+            <li>Incentivo à atividade física</li>
+            <li>Menor impacto ambiental</li>
+            <li>Mais independência para estudantes</li>
+          </ul>
+        </div>
+
+        <div class="grid-card">
+          <div class="grid-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3>Onde Está Disponível?</h3>
+          <p>
+            O EasyBike está em fase de implementação e será expandido
+            progressivamente para instituições cadastradas. Em breve, será possível
+            consultar o mapa de estações e planejar seus trajetos com facilidade.
+          </p>
+        </div>
+      </section>
+
+      <section class="join-section">
+        <div class="join-content">
+          <h2>Junte-se ao Movimento</h2>
+          <p>
+            O EasyBike é mais do que um projeto de transporte. É uma iniciativa de
+            inclusão, sustentabilidade e cuidado com os estudantes. Vamos juntos
+            transformar a mobilidade estudantil.
+          </p>
+          <button class="join-button" onclick="window.location.href='login.html'">Cadastre-se Agora</button>
+        </div>
+        <div class="join-image">
+          <i class="fas fa-users"></i>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-links">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Mapa</a></li>
+            <li><a href="como-usar.html">Como Usar</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Menu mobile
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
+
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
+        });
+
+        // Fechar menu ao clicar em links
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
+          });
+        });
+
+        // Fake Select
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          const icon = select.querySelector(".select-icon");
+
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            select.classList.toggle("open");
+
+            fakeSelects.forEach((otherSelect) => {
+              if (otherSelect !== select) {
+                otherSelect.classList.remove("open");
+              }
+            });
+          });
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener("click", function () {
+          fakeSelects.forEach((select) => {
+            select.classList.remove("open");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

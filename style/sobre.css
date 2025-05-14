@@ -7,8 +7,10 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: white; /* Fundo geral branco */
+  background-color: #f5f5f5;
   font-family: "Lexend", sans-serif;
+  color: #333333;
+  line-height: 1.6;
 }
 
 .container {
@@ -178,204 +180,196 @@ nav {
   color: #00695c;
 }
 
-/* ===== MAIN CONTENT ===== */
-main {
-  background-color: #E5E5E5;
-  width: 100%;
+/* ===== HERO SECTION ===== */
+.hero-section {
+  background: linear-gradient(135deg, #00695c 0%, #00897b 100%);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-main .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 60px;
-  padding: 100px 20px;
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
-.text-content {
-  flex: 1;
-  min-width: 300px;
+.hero-section h1 {
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  color: white;
 }
 
-main img {
-  height: 300px;
-  object-fit: contain;
-  animation: float 6s ease-in-out infinite;
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.hero-bike-icon {
+  font-size: 3rem;
+  margin-top: 20px;
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
-main h1 {
-  font-family: "Poppins", sans-serif;
-  font-size: 2.8rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  color: #00695c;
-  font-weight: 700;
+/* ===== ABOUT CONTAINER ===== */
+.about-container {
+  max-width: 1200px;
+  margin: -40px auto 60px;
+  padding: 0 20px;
 }
 
-main button {
-  margin-top: 20px;
-  background-color: #00695c;
-  color: white;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  width: 180px;
-  height: 50px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-main button:hover {
-  background-color: #008d7d;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-main p {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  max-width: 500px;
-  color: #333;
-}
-
-/* SEÇÃO DE CARDS */
-
-/* Estilos dos Cards */
-
-.cards-section {
-    padding-top: 100px;
-  padding-bottom: 150px;
-  background-color: #fff;
+/* ===== ABOUT CARD ===== */
+.about-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 30px;
+  margin-top: 100px;
+  box-shadow: 0 10px 30px rgba(0, 105, 92, 0.15);
+  border: 1px solid rgba(0, 105, 92, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
-.cards-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
-
-.card {
-  flex: 1;
-  min-width: 280px;
-  max-width: 200px;
-  padding: 30px;
-  border-radius: 8px;
-  background: #f3f3f3;
-  text-align: center;
-  transition: transform 0.3s ease;
-  border: 1px solid #acacac;
-  border-radius: 20px;
-}
-
-.card h3 {
-  font-family: poppins;
-  color: #00695c;
-}
-
-.card p {
-  font-family: lexend;
-}
-
-.card:hover {
-  transform: translateY(-5px);
+.card-highlight {
+  border-left: 5px solid #00695c;
 }
 
 .card-icon {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  color: #00695c;
+  margin-right: 25px;
+  flex-shrink: 0;
+}
+
+.card-content h2 {
+  color: #00695c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.card-content p {
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* ===== ABOUT GRID ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.grid-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 105, 92, 0.1);
+}
+
+.grid-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 105, 92, 0.15);
+}
+
+.grid-icon {
+  font-size: 1.8rem;
   color: #00695c;
   margin-bottom: 20px;
 }
 
-.section-title {
-  text-align: center;
+.grid-card h3 {
+  color: #00695c;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.grid-card ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.grid-card ul li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.grid-card p {
+  line-height: 1.7;
+}
+
+/* ===== JOIN SECTION ===== */
+.join-section {
+  background-color: #00695c;
+  border-radius: 12px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
   color: white;
-  font-size: 2rem;
 }
 
-/* ===== SEÇÃO "COMO FUNCIONA" ===== */
-.como-funciona {
-  padding: 40px 0;
-  padding-bottom: 100px;
-  background-color: #00695c;
+.join-content {
+  flex: 1;
+  padding-right: 40px;
 }
 
-.passos-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 80px;
-  margin-top: 50px;
-  justify-content: center; /* Isso ajuda a centralizar o grid */
-  width: 700px; /* Limita a largura do grid */
-  margin-left: auto;
-  margin-right: auto;
+.join-content h2 {
+  color: white;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
-.passo-card {
-  position: relative;
-  padding: 50px;
-  border-radius: 20px;
-  border-top-left-radius: 0px;
-  width: 200px;
-  height: 100px;
-  font-family: lexend;
-  font-weight: bold;
-  background-color: #f8f8f8;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* Número com fundo “invadindo” */
-.passo-numero {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #00695c;
-  color: #fff;
-  width: 60px;
-  height: 60px;
-  border-bottom-right-radius: 25px; /* Corrige a borda arredondada apenas no canto inferior direito */
-  border-top-left-radius: 0px;
-  font-size: 1.6rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Poppins", sans-serif;
-  z-index: 1;
-}
-
-.passo-texto {
+.join-content p {
+  margin-bottom: 25px;
   font-size: 1.1rem;
-  color: #333;
-  line-height: 1.5;
+  line-height: 1.7;
+}
+
+.join-button {
+  background-color: white;
+  color: #00695c;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Lexend", sans-serif;
+}
+
+.join-button:hover {
+  background-color: #e0f2f1;
+  transform: translateY(-2px);
+}
+
+.join-image {
+  font-size: 5rem;
+  opacity: 0.8;
 }
 
 /* ===== FOOTER ===== */
 .footer {
   background-color: #eaeaea;
   color: black;
-  padding: 40px 0 0 0; /* Removemos o padding-bottom */
+  padding: 40px 0 0 0;
 }
 
 .footer .container {
@@ -395,7 +389,7 @@ main p {
 }
 
 .footer-links a {
-  color: black;
+  color: #000000;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -409,12 +403,11 @@ main p {
   text-decoration: underline;
 }
 
-/* Área do copyright destacada */
 .footer-copyright {
-  background-color: #cfcfcf; /* Cor de fundo diferente */
+  background-color: #cfcfcf;
   width: 100%;
   padding: 20px 0;
-  margin-top: 30px; /* Espaço acima da área de copyright */
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -424,10 +417,79 @@ main p {
   margin: 0;
 }
 
-/* ===== ESTILOS GERAIS RESPONSIVOS ===== */
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 15px;
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 992px) {
+  .hero-section {
+    padding: 60px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .about-card {
+    flex-direction: column;
+    padding: 30px;
+  }
+  
+  .card-icon {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .join-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .join-content {
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+  
+  .join-image {
+    margin-top: 20px;
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 50px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .about-card, .grid-card {
+    padding: 25px;
+  }
+  
+  .card-content h2, .join-content h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section h1 {
+    font-size: 1.6rem;
+  }
+  
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .join-section {
+    padding: 30px 20px;
+  }
+  
+  .join-button {
+    width: 100%;
   }
 }
 
@@ -461,7 +523,6 @@ main p {
     padding-right: 40px;
   }
 
-  /* Menu hamburguer para mobile */
   .menu-toggle {
     display: block;
     cursor: pointer;
@@ -478,122 +539,6 @@ main p {
     width: 90px;
     font-size: 14px;
     padding: 6px 10px;
-  }
-}
-
-/* ===== MAIN CONTENT RESPONSIVO ===== */
-@media (max-width: 992px) {
-  main .container {
-    flex-direction: column;
-    padding: 60px 20px;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .text-content {
-    order: 1;
-  }
-
-  main img {
-    height: 250px;
-    order: 2;
-  }
-
-  main h1 {
-    font-size: 2.2rem;
-  }
-
-  main p {
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 576px) {
-  main h1 {
-    font-size: 1.8rem;
-  }
-
-  main button {
-    width: 160px;
-    height: 45px;
-    font-size: 15px;
-  }
-}
-
-/* ===== SEÇÃO DE CARDS RESPONSIVA ===== */
-@media (max-width: 1200px) {
-  .cards-section {
-    padding: 80px 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .cards-wrapper {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .card {
-    min-width: 220px;
-    padding: 20px;
-  }
-
-}
-
-@media (max-width: 576px) {
-  .cards-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    max-width: 100%;
-  }
-}
-
-/* ===== SEÇÃO "COMO FUNCIONA" RESPONSIVA ===== */
-@media (max-width: 992px) {
-  .como-funciona {
-    padding: 60px 0;
-  }
-
-  .passos-wrapper {
-    width: 100%;
-    max-width: 700px;
-    gap: 40px;
-  }
-
-  .passo-card {
-    padding: 40px 30px;
-    width: auto;
-    height: auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .passos-wrapper {
-    grid-template-columns: 1fr;
-    max-width: 500px;
-    gap: 30px;
-  }
-
-  .passo-card {
-    padding: 35px 25px;
-  }
-
-  .passo-numero {
-    width: 50px;
-    height: 50px;
-    font-size: 1.4rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .passo-card {
-    padding: 30px 20px;
-  }
-
-  .passo-texto {
-    font-size: 1rem;
   }
 }
 
