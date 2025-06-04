@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Bike</title>
+    <link rel="stylesheet" href="style/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- NAVBAR em largura total -->
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
+        </div>
+
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <div class="option">Praia Grande</div>
+              <div class="option">São Vicente</div>
+            </div>
+          </li>
+
+          <li><a href="como-usar.html">Como usar</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button onclick="window.location.href='login.html'">Entrar</button>
+        </div>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN centralizado dentro do container -->
+    <main>
+      <div class="container">
+        <div class="text-content">
+          <h1>Transforme seu trajeto em<br />algo sustentável.</h1>
+          <p>
+            O EasyBike é um sistema gratuito de empréstimo de<br />bicicletas
+            exclusivo para estudantes da sua<br />instituição. Rápido, prático e
+            ecológico.
+          </p>
+          <button>Quero pedalar</button>
+        </div>
+        <img src="img/bike.png" alt="menina andando de bike" />
+      </div>
+    </main>
+
+    <!-- Seção dos Cards -->
+    <section class="cards-section">
+      <div class="container">
+        <div class="cards-wrapper">
+          <!-- Card 1 -->
+          <div class="card">
+            <i class="fas fa-bicycle card-icon"></i>
+            <h3>Mobilidade Gratuita</h3>
+            <p>
+              Pegue uma bicicleta em um ponto e devolva em outro, sem custo.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card">
+            <i class="fas fa-solid fa-school card-icon"></i>
+            <h3>Para estudantes</h3>
+            <p>
+              Serviço exclusivo para alunos de instituições públicas parceiras.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card">
+            <i class="fas fa-solid fa-leaf card-icon"></i>
+            <h3>Sustentável e saudável</h3>
+            <p>Reduza o impacto ambiental enquanto cuida da sua saúde.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção "Como funciona" -->
+    <section class="como-funciona">
+      <h2 class="section-title">Como funciona?</h2>
+      <div class="container">
+        <div class="passos-wrapper">
+          <!-- Passo 1 -->
+          <div class="passo-card">
+            <div class="passo-numero">1</div>
+            <p class="passo-texto">Faça login com seu e-mail institucional</p>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="passo-card">
+            <div class="passo-numero">2</div>
+            <p class="passo-texto">Visualize as estações disponíveis no mapa</p>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="passo-card">
+            <div class="passo-numero">3</div>
+            <p class="passo-texto">Retire sua bicicleta escaneando o QR Code</p>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="passo-card">
+            <div class="passo-numero">4</div>
+            <p class="passo-texto">
+              Pedale e devolva em qualquer estação EasyBike
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-links">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Mapa</a></li>
+            <li><a href="como-usar.html">Como Usar</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Menu mobile
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
+
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
+        });
+
+        // Fechar menu ao clicar em links
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
+          });
+        });
+
+        // Fake Select
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          const icon = select.querySelector(".select-icon");
+
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            select.classList.toggle("open");
+
+            fakeSelects.forEach((otherSelect) => {
+              if (otherSelect !== select) {
+                otherSelect.classList.remove("open");
+              }
+            });
+          });
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener("click", function () {
+          fakeSelects.forEach((select) => {
+            select.classList.remove("open");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

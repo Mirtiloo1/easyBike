@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste de QR Code</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Leitor de QR Code Interativo</h1>
+      <div id="qrcode-container">
+        <div id="qrcode"></div>
+        <p>Escaneie o QR Code com seu celular.</p>
+      </div>
+      <div id="status-container">
+        <p>Status: <span id="status-text">Aguardando conexão...</span></p>
+      </div>
+      <div id="bike-usage-info" style="display: none">
+        <h2>Bicicleta <span id="bike-id-display"></span> em Uso</h2>
+        <p>Tempo de Uso: <span id="time-elapsed">00:00:00</span></p>
+        <button id="end-use-button" class="action-btn">Finalizar Uso</button>
+      </div>
+      <div id="instructions">
+        <p><strong>Instruções:</strong></p>
+        <ol>
+          <li>Mantenha esta página aberta no seu computador.</li>
+          <li>
+            Escaneie o QR Code gerado com a câmera do seu celular ou um app de
+            leitura de QR Code.
+          </li>
+          <li>
+            Após escanear, o status nesta página deverá mudar para "Usado".
+          </li>
+        </ol>
+        <p id="ngrok-info" style="display: none; color: #ff6347">
+          <strong>Atenção:</strong> Se estiver testando com ngrok, certifique-se
+          que o servidor Node.js (server.js) está configurado com a URL correta
+          do ngrok na variável `EXTERNAL_URL`.
+        </p>
+      </div>
+    </div>
+
+    <script src="qrcode.min.js"></script>
+    <script src="reconnecting-websocket.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

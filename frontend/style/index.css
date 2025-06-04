@@ -1,0 +1,610 @@
+/* ===== ESTILOS GERAIS ===== */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white; /* Fundo geral branco */
+  font-family: "Lexend", sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  background-color: #00695c;
+  height: 70px;
+  padding: 0 30px;
+  position: relative;
+  z-index: 1000;
+}
+
+.nav-left h1 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  font-size: 24px;
+}
+
+.nav-left a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.menu-toggle {
+  display: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.nav-center {
+  display: flex;
+  gap: 50px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.nav-center li {
+  position: relative;
+}
+
+.nav-center li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: opacity 0.3s ease;
+  padding: 8px 0;
+  display: block;
+}
+
+.nav-center li a:hover {
+  opacity: 0.8;
+}
+
+/* ===== FAKE SELECT ===== */
+.fake-select-wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.fake-select-display {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  padding: 8px 25px 8px 0;
+  position: relative;
+}
+
+.fake-select-display:hover {
+  opacity: 0.9;
+}
+
+.fake-select-options {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  background-color: #00897b;
+  border-radius: 4px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  overflow: hidden;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fake-select-options .option {
+  padding: 12px 16px;
+  color: white;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.fake-select-options .option:last-child {
+  border-bottom: none;
+}
+
+.fake-select-options .option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fake-select-wrapper.open .fake-select-options {
+  display: block;
+}
+
+.select-icon {
+  margin-left: 8px;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fake-select-wrapper.open .select-icon {
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+/* ===== BOTÃO NAV-RIGHT ===== */
+.nav-right button {
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 8px 12px;
+  width: 110px;
+  font-family: "Lexend", sans-serif;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.nav-right button:hover {
+  background-color: white;
+  color: #00695c;
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+  background-color: #E5E5E5;
+  width: 100%;
+}
+
+main .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 60px;
+  padding: 100px 20px;
+}
+
+.text-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+main img {
+  height: 300px;
+  object-fit: contain;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+main h1 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #00695c;
+  font-weight: 700;
+}
+
+main button {
+  margin-top: 20px;
+  background-color: #00695c;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  width: 180px;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+main button:hover {
+  background-color: #008d7d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+main p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  max-width: 500px;
+  color: #333;
+}
+
+/* SEÇÃO DE CARDS */
+
+/* Estilos dos Cards */
+
+.cards-section {
+    padding-top: 100px;
+  padding-bottom: 150px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 200px;
+  padding: 30px;
+  border-radius: 8px;
+  background: #f3f3f3;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 1px solid #acacac;
+  border-radius: 20px;
+}
+
+.card h3 {
+  font-family: poppins;
+  color: #00695c;
+}
+
+.card p {
+  font-family: lexend;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #00695c;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+}
+
+/* ===== SEÇÃO "COMO FUNCIONA" ===== */
+.como-funciona {
+  padding: 40px 0;
+  padding-bottom: 100px;
+  background-color: #00695c;
+}
+
+.passos-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 80px;
+  margin-top: 50px;
+  justify-content: center; /* Isso ajuda a centralizar o grid */
+  width: 700px; /* Limita a largura do grid */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.passo-card {
+  position: relative;
+  padding: 50px;
+  border-radius: 20px;
+  border-top-left-radius: 0px;
+  width: 200px;
+  height: 100px;
+  font-family: lexend;
+  font-weight: bold;
+  background-color: #f8f8f8;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Número com fundo “invadindo” */
+.passo-numero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #00695c;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-bottom-right-radius: 25px; /* Corrige a borda arredondada apenas no canto inferior direito */
+  border-top-left-radius: 0px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  z-index: 1;
+}
+
+.passo-texto {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background-color: #eaeaea;
+  color: black;
+  padding: 40px 0 0 0; /* Removemos o padding-bottom */
+}
+
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-links ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  padding: 5px;
+  display: inline-block;
+  text-align: center;
+}
+
+.footer-links a:hover {
+  color: #00695c;
+  text-decoration: underline;
+}
+
+/* Área do copyright destacada */
+.footer-copyright {
+  background-color: #cfcfcf; /* Cor de fundo diferente */
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 30px; /* Espaço acima da área de copyright */
+  text-align: center;
+}
+
+.footer-copyright p {
+  color: #333333;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ===== ESTILOS GERAIS RESPONSIVOS ===== */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+
+/* ===== NAVBAR RESPONSIVA ===== */
+@media (max-width: 992px) {
+  nav {
+    height: auto;
+    padding: 15px 20px;
+  }
+
+  .nav-center {
+    flex-direction: column;
+    gap: 15px;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: #00695c;
+    padding: 20px 0;
+    transform: translateY(-150%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+
+  .nav-center.active {
+    transform: translateY(0);
+  }
+
+  .nav-right {
+    margin-left: auto;
+    padding-right: 40px;
+  }
+
+  /* Menu hamburguer para mobile */
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-left h1 {
+    font-size: 20px;
+  }
+
+  .nav-right button {
+    width: 90px;
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+}
+
+/* ===== MAIN CONTENT RESPONSIVO ===== */
+@media (max-width: 992px) {
+  main .container {
+    flex-direction: column;
+    padding: 60px 20px;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .text-content {
+    order: 1;
+  }
+
+  main img {
+    height: 250px;
+    order: 2;
+  }
+
+  main h1 {
+    font-size: 2.2rem;
+  }
+
+  main p {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 576px) {
+  main h1 {
+    font-size: 1.8rem;
+  }
+
+  main button {
+    width: 160px;
+    height: 45px;
+    font-size: 15px;
+  }
+}
+
+/* ===== SEÇÃO DE CARDS RESPONSIVA ===== */
+@media (max-width: 1200px) {
+  .cards-section {
+    padding: 80px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    min-width: 220px;
+    padding: 20px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .cards-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+}
+
+/* ===== SEÇÃO "COMO FUNCIONA" RESPONSIVA ===== */
+@media (max-width: 992px) {
+  .como-funciona {
+    padding: 60px 0;
+  }
+
+  .passos-wrapper {
+    width: 100%;
+    max-width: 700px;
+    gap: 40px;
+  }
+
+  .passo-card {
+    padding: 40px 30px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .passos-wrapper {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    gap: 30px;
+  }
+
+  .passo-card {
+    padding: 35px 25px;
+  }
+
+  .passo-numero {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .passo-card {
+    padding: 30px 20px;
+  }
+
+  .passo-texto {
+    font-size: 1rem;
+  }
+}
+
+/* ===== FOOTER RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .footer-links ul {
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .footer-copyright {
+    padding: 15px 0;
+  }
+}
