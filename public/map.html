@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa - EasyBike</title>
+    <link rel="stylesheet" href="style/map.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="reconnecting-websocket.min.js"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
+        </div>
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <div class="option">Praia Grande</div>
+              <div class="option">São Vicente</div>
+            </div>
+          </li>
+          <li><a href="como-usar.html">Como usar</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+        <div class="nav-right">
+          <button onclick="window.location.href='login.html'">Entrar</button>
+        </div>
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <header class="map-hero-section">
+      <div class="hero-content">
+        <h1>Nossas Estações</h1>
+        <p class="hero-subtitle">
+          Encontre as bicicletas disponíveis perto de você em tempo real.
+        </p>
+      </div>
+    </header>
+
+    <main class="map-container">
+      <div id="mapid"></div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-links">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Mapa</a></li>
+            <li><a href="como-usar.html">Como Usar</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
+          });
+        });
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            select.classList.toggle("open");
+            fakeSelects.forEach((otherSelect) => {
+              if (otherSelect !== select) otherSelect.classList.remove("open");
+            });
+          });
+        });
+        document.addEventListener("click", function () {
+          fakeSelects.forEach((select) => {
+            select.classList.remove("open");
+          });
+        });
+        const map = L.map("mapid").setView([-24.002, -46.402], 13);
+        const markers = new Map();
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+        const createBikeIcon = (status) => {
+          let className = "";
+          let iconHtml = '<i class="fas fa-bicycle"></i>';
+
+          if (status === "em_uso") {
+            className = "bike-icon-em_uso";
+          } else if (status === "manutencao") {
+            className = "bike-icon-manutencao";
+          } else {
+            className = "bike-icon-disponivel";
+          }
+
+          return L.divIcon({
+            html: iconHtml,
+            className: `bike-marker-icon ${className}`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+        };
+        function updateBikeMarker(bikeId, newStatus, location, name) {
+          let marker = markers.get(bikeId);
+          if (marker) {
+            marker.setIcon(createBikeIcon(newStatus));
+            marker.setPopupContent(
+              `<b>${name}</b><br>ID: ${bikeId}<br>Status: <span id="status-${bikeId}">${newStatus}</span>`
+            );
+            console.log(
+              `Mapa: Marcador da bike ${bikeId} atualizado para status: ${newStatus}`
+            );
+          } else if (
+            location &&
+            typeof location.lat === "number" &&
+            typeof location.lon === "number" &&
+            name
+          ) {
+            console.log(
+              `Mapa: Criando novo marcador para bike ${bikeId} com status: ${newStatus}`
+            );
+            marker = L.marker([location.lat, location.lon], {
+              icon: createBikeIcon(newStatus),
+            })
+              .addTo(map)
+              .bindPopup(
+                `<b>${name}</b><br>ID: ${bikeId}<br>Status: <span id="status-${bikeId}">${newStatus}</span>`
+              );
+            markers.set(bikeId, marker);
+          } else {
+            console.warn(
+              `Mapa: Marcador para a bike ${bikeId} não encontrado e dados incompletos para criação. Status: ${newStatus}`
+            );
+          }
+        }
+        const ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
+        let mapClientId = null;
+        ws.onopen = () => {
+          console.log("Mapa: Conectado ao servidor WebSocket.");
+          ws.send(JSON.stringify({ type: "helloFromMap" }));
+        };
+        ws.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          console.log("Mapa: Mensagem recebida do servidor:", message);
+          if (message.type === "serverClientId") {
+            mapClientId = message.clientId;
+            console.log("Mapa: ClientId recebido e salvo:", mapClientId);
+            ws.send(JSON.stringify({ type: "requestAllBikeStatuses" }));
+          } else if (message.type === "allBikeStatuses") {
+            message.bikes.forEach((bikeData) => {
+              updateBikeMarker(
+                bikeData.id,
+                bikeData.status,
+                bikeData.location,
+                bikeData.name
+              );
+            });
+            console.log(
+              "Mapa: Status de todas as bikes atualizado ao iniciar/reconectar."
+            );
+          } else if (message.type === "bikeStatusUpdate") {
+            const { bikeId, status, location, name } = message;
+            updateBikeMarker(bikeId, status, location, name);
+          }
+        };
+        ws.onclose = () => {
+          console.log(
+            "Mapa: Desconectado do servidor WebSocket. Tentando reconectar..."
+          );
+        };
+        ws.onerror = (error) => {
+          console.error("Mapa: Erro no WebSocket:", error);
+        };
+      });
+    </script>
+  </body>
+</html>

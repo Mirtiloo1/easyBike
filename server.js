@@ -8,33 +8,51 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Simulação de banco de dados de bicicletas
-const bikes = new Map(); // bikeId -> { id, status, location: {lat, lon}, qrId_atual, usuario_atual, hora_inicio_uso }
+const bikes = new Map();
+const qrCodeSessions = new Map();
+const activeWsClients = new Map();
 
-// Configure aqui a URL pública que o ngrok fornecerá.
-// Exemplo: 'https://seu-subdominio.ngrok-free.app'
-// É CRUCIAL que esta URL esteja correta para o QR code funcionar externamente.
 const EXTERNAL_URL =
-  process.env.EXTERNAL_URL ||
-  "https://d5ca-2804-7f0-9601-4305-3078-42d5-6592-30ae.ngrok-free.app"; // Mude para sua URL do ngrok
+  process.env.EXTERNAL_URL || "https://b6e2-191-255-149-4.ngrok-free.app";
 
-// Serve arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, "public")));
 
-// Armazena o status dos QR codes e a qual cliente WebSocket pertencem
-const qrCodeSessions = new Map(); // qrId -> { wsClient, status: 'pending' | 'verified' }
+function broadcastBikeStatusUpdate(bikeId, newStatus) {
+  const bike = bikes.get(bikeId);
+  if (!bike) return;
+
+  const message = JSON.stringify({
+    type: "bikeStatusUpdate",
+    bikeId: bike.id,
+    status: bike.status,
+    location: bike.location,
+    name: bike.name,
+  });
+
+  activeWsClients.forEach((wsClient) => {
+    if (wsClient.readyState === WebSocket.OPEN) {
+      wsClient.send(message);
+    }
+  });
+
+  console.log(
+    `Broadcast: Status da bike ${bikeId} atualizado para ${newStatus}.`
+  );
+}
 
 wss.on("connection", (ws) => {
-  let clientId = null; // será definido ao receber "hello"
+  const connectionClientId = uuidv4();
+  activeWsClients.set(connectionClientId, ws);
+  console.log(
+    `Cliente WebSocket [${connectionClientId}] conectado. Total: ${activeWsClients.size}`
+  );
 
-  console.log(`Cliente WebSocket conectado com ID temporário: ${clientId}`);
-
-  // Envia o clientId ao cliente para que ele possa armazenar
-  ws.send(JSON.stringify({ type: "clientId", clientId }));
+  ws.send(
+    JSON.stringify({ type: "serverClientId", clientId: connectionClientId })
+  );
 
   ws.on("message", (message) => {
     let parsedMessage;
-
     try {
       parsedMessage = JSON.parse(message);
     } catch (e) {
@@ -42,38 +60,42 @@ wss.on("connection", (ws) => {
       return;
     }
 
-    // Se ainda não temos um clientId e o cliente enviou 'hello'
-    if (!clientId && parsedMessage.type === "hello" && parsedMessage.clientId) {
-      clientId = parsedMessage.clientId;
-      console.log(`ClientId definido via hello: ${clientId}`);
-      ws.send(JSON.stringify({ type: "clientId", clientId }));
-      return;
-    }
+    console.log(
+      `Mensagem recebida do cliente [${connectionClientId}]:`,
+      parsedMessage
+    );
 
-    // Se o cliente reaproveitou o clientId salvo, sobrescreve
-    if (parsedMessage.clientId && typeof parsedMessage.clientId === "string") {
-      clientId = parsedMessage.clientId;
-      console.log(`Cliente reaproveitando clientId: ${clientId}`);
-    }
-
-    console.log(`Mensagem recebida do cliente [${clientId}]:`, parsedMessage);
-
-    if (parsedMessage.type === "requestNewQr") {
+    if (parsedMessage.type === "clientHello") {
+      console.log(
+        `Cliente [${connectionClientId}] enviou clientHello com ID salvo: ${
+          parsedMessage.clientId || "Nenhum"
+        }`
+      );
+    } else if (parsedMessage.type === "requestNewQr") {
       const qrId = uuidv4();
-      qrCodeSessions.set(qrId, { wsClient: ws, status: "pending", clientId });
+      qrCodeSessions.set(qrId, {
+        wsClient: ws,
+        status: "pending",
+        clientId: connectionClientId,
+      });
       ws.send(
         JSON.stringify({ type: "init", qrId, externalUrl: EXTERNAL_URL })
       );
       console.log(
-        `Novo QR Code ${qrId} gerado e enviado para o cliente ${clientId}.`
+        `Novo QR Code ${qrId} gerado e enviado para o cliente ${connectionClientId}.`
       );
     } else if (parsedMessage.type === "resumeSession") {
       const { bikeId } = parsedMessage;
       const bike = bikes.get(bikeId);
 
-      if (bike && bike.status === "em_uso" && bike.usuario_atual === clientId) {
+      if (
+        bike &&
+        bike.status === "em_uso" &&
+        (bike.usuario_atual === connectionClientId ||
+          parsedMessage.clientId === bike.usuario_atual)
+      ) {
         console.log(
-          `Sessão da bicicleta ${bikeId} retomada para o cliente ${clientId}.`
+          `Sessão da bicicleta ${bikeId} retomada para o cliente ${connectionClientId}.`
         );
         ws.send(
           JSON.stringify({
@@ -86,21 +108,15 @@ wss.on("connection", (ws) => {
         );
       } else {
         console.log(
-          `Tentativa de retomar sessão falhou para bike ${bikeId} e cliente ${clientId}.`
+          `Tentativa de retomar sessão falhou para bike ${bikeId} e cliente ${connectionClientId}.`
         );
-        console.log(
-          `Bike status: ${bike ? bike.status : "N/A"}, Usuario atual: ${
-            bike ? bike.usuario_atual : "N/A"
-          }, Cliente ID: ${clientId}`
-        );
-
         ws.send(JSON.stringify({ type: "clearClientStateAndRequestNewQr" }));
 
         const newQrId = uuidv4();
         qrCodeSessions.set(newQrId, {
           wsClient: ws,
           status: "pending",
-          clientId,
+          clientId: connectionClientId,
         });
         ws.send(
           JSON.stringify({
@@ -110,18 +126,35 @@ wss.on("connection", (ws) => {
           })
         );
         console.log(
-          `Novo QR Code ${newQrId} gerado e enviado para o cliente ${clientId} após falha na retomada da sessão.`
+          `Novo QR Code ${newQrId} gerado e enviado para o cliente ${connectionClientId} após falha na retomada da sessão.`
         );
       }
+    } else if (parsedMessage.type === "requestAllBikeStatuses") {
+      const allBikesData = Array.from(bikes.values()).map((bike) => ({
+        id: bike.id,
+        status: bike.status,
+        location: bike.location,
+        name: bike.name || `Bicicleta ${bike.id}`,
+      }));
+      ws.send(JSON.stringify({ type: "allBikeStatuses", bikes: allBikesData }));
+      console.log(
+        `Status de ${allBikesData.length} bikes enviado para o cliente de mapa [${connectionClientId}].`
+      );
     }
   });
 
   ws.on("close", () => {
-    console.log(`Cliente WebSocket [${clientId}] desconectado.`);
+    activeWsClients.delete(connectionClientId);
+    console.log(
+      `Cliente WebSocket [${connectionClientId}] desconectado. Total: ${activeWsClients.size}`
+    );
   });
 
   ws.on("error", (error) => {
-    console.error(`Erro no WebSocket do cliente [${clientId}]:`, error);
+    console.error(
+      `Erro no WebSocket do cliente [${connectionClientId}]:`,
+      error
+    );
   });
 });
 
@@ -161,6 +194,8 @@ app.get("/verify/:qrId", (req, res) => {
             })
           );
         }
+
+        broadcastBikeStatusUpdate(bikeIdToAssign, bike.status);
 
         res.status(200).send(`
             <html lang="pt-br">
@@ -207,7 +242,6 @@ app.get("/verify/:qrId", (req, res) => {
   }
 });
 
-// Endpoint para finalizar uso da bicicleta
 app.post("/end-use/:bikeId", (req, res) => {
   const { bikeId } = req.params;
   const bike = bikes.get(bikeId);
@@ -220,26 +254,17 @@ app.post("/end-use/:bikeId", (req, res) => {
       } segundos.`
     );
 
-    // NOTA IMPORTANTE: A SESSÃO WEBSOCKET DEVE SER NOTIFICADA ANTES DE LIMPAR qrId_atual
-    // Senão, 'find' na linha 237 não encontra a sessão
-    const sessionToNotify = Array.from(qrCodeSessions.values()).find(
-      (s) => s.clientId === bike.usuario_atual // Encontra a sessão WebSocket que está vinculada a este usuário (cliente)
-    );
+    const clientToNotifyId = bike.usuario_atual;
 
-    // Limpa o estado da bike no servidor
     bike.status = "disponivel";
-    bike.qrId_atual = null; // Limpa DEPOIS de encontrar a sessão
+    bike.qrId_atual = null;
     bike.usuario_atual = null;
     bike.hora_inicio_uso = null;
     bikes.set(bikeId, bike);
 
-    // Notificar o cliente via WebSocket que o uso foi finalizado
-    if (
-      sessionToNotify &&
-      sessionToNotify.wsClient &&
-      sessionToNotify.wsClient.readyState === WebSocket.OPEN
-    ) {
-      sessionToNotify.wsClient.send(
+    const sessionToNotify = activeWsClients.get(clientToNotifyId);
+    if (sessionToNotify && sessionToNotify.readyState === WebSocket.OPEN) {
+      sessionToNotify.send(
         JSON.stringify({
           type: "usageEnded",
           bikeId: bikeId,
@@ -247,6 +272,8 @@ app.post("/end-use/:bikeId", (req, res) => {
         })
       );
     }
+
+    broadcastBikeStatusUpdate(bikeId, bike.status);
 
     res
       .status(200)
@@ -262,35 +289,38 @@ const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
-  console.log(
-    `Certifique-se de definir EXTERNAL_URL com sua URL do ngrok se for testar externamente.`
-  );
 
   if (bikes.size === 0) {
     bikes.set("bike-001", {
       id: "bike-001",
       status: "disponivel",
-      location: { lat: -24.0, lon: -46.0 },
+      location: { lat: -24.004884, lon: -46.412638 },
       qrId_atual: null,
       usuario_atual: null,
       hora_inicio_uso: null,
+      name: "Praça 19 de Janeiro - Boqueirão",
     });
+
     bikes.set("bike-002", {
       id: "bike-002",
       status: "disponivel",
-      location: { lat: -24.001, lon: -46.001 },
+      location: { lat: -23.999038, lon: -46.413919 },
       qrId_atual: null,
       usuario_atual: null,
       hora_inicio_uso: null,
+      name: "Terminal Tude Bastos",
     });
+
     bikes.set("bike-003", {
       id: "bike-003",
       status: "manutencao",
-      location: { lat: -24.002, lon: -46.002 },
+      location: { lat: -24.013643, lon: -46.42164 },
       qrId_atual: null,
       usuario_atual: null,
       hora_inicio_uso: null,
+      name: "Feirinha da Guilhermina",
     });
+
     console.log(
       "Bicicletas de exemplo populadas:",
       Array.from(bikes.values()).map((b) => b.id)

@@ -11,104 +11,85 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentBikeId = null;
   let startTime = null;
   let timerInterval = null;
+  let wsClientId = null;
 
-  // --- FUNÇÕES DE PERSISTÊNCIA COM LOCALSTORAGE ---
   function saveUsageState(bikeId, sTime) {
     localStorage.setItem("easyBike_currentBikeId", bikeId);
     localStorage.setItem("easyBike_startTime", sTime.toString());
-    console.log("Estado de uso salvo no localStorage.");
+    localStorage.setItem("easyBike_lastWsClientId", wsClientId);
   }
 
   function clearUsageState() {
     localStorage.removeItem("easyBike_currentBikeId");
     localStorage.removeItem("easyBike_startTime");
-    console.log("Estado de uso limpo do localStorage.");
+    localStorage.removeItem("easyBike_lastWsClientId");
   }
 
   function loadUsageState() {
     const storedBikeId = localStorage.getItem("easyBike_currentBikeId");
     const storedStartTime = localStorage.getItem("easyBike_startTime");
+    const storedClientId = localStorage.getItem("easyBike_lastWsClientId");
 
-    if (storedBikeId && storedStartTime) {
+    if (storedBikeId && storedStartTime && storedClientId) {
       currentBikeId = storedBikeId;
       startTime = parseInt(storedStartTime, 10);
-      console.log("Estado de uso carregado do localStorage:", {
-        currentBikeId,
-        startTime,
-      });
+      wsClientId = storedClientId;
       return true;
     }
     return false;
   }
-  // --- FIM DAS FUNÇÕES DE PERSISTÊNCIA ---
 
-  // Conecta ao servidor WebSocket
   const ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
 
   ws.onopen = () => {
-    console.log("Conectado ao servidor WebSocket.");
-
-    const savedClientId = localStorage.getItem("easyBike_clientId");
-    if (savedClientId) {
-      // Envia o clientId salvo antes de qualquer ação
-      ws.send(JSON.stringify({ type: "hello", clientId: savedClientId }));
-      console.log("ClientId reaproveitado enviado:", savedClientId);
-    }
-
-    // continua com o restante da lógica normalmente
-
-    // Ao conectar, primeiro tenta retomar a sessão.
-    // A visibilidade dos elementos será ajustada após a resposta do servidor.
+    statusText.textContent = "Status: Conectando...";
+    statusText.className = "status-pending";
     qrCodeContainer.style.display = "none";
     bikeUsageInfo.style.display = "none";
-
-    if (loadUsageState()) {
-      const clientId = localStorage.getItem("easyBike_clientId");
-      ws.send(
-        JSON.stringify({
-          type: "resumeSession",
-          bikeId: currentBikeId,
-          clientId,
-        })
-      );
-
-      statusText.textContent = `Status: Reconectando sessão para bicicleta ${currentBikeId}...`;
-      statusText.className = "status-pending";
-      // Mostra a tela de uso imediatamente com os dados do localStorage para uma transição mais suave
-      bikeUsageInfo.style.display = "block";
-      bikeIdDisplay.textContent = currentBikeId;
-      startTimer(); // Reinicia o timer com o tempo salvo
-    } else {
-      // Se não há estado salvo, solicita um novo QR Code
-      ws.send(JSON.stringify({ type: "requestNewQr" }));
-      statusText.textContent = "Status: Conectado. Solicitando QR Code...";
-      statusText.className = "status-pending";
-    }
   };
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
-    console.log("Mensagem recebida do servidor:", message);
 
-    if (message.type === "clientId") {
-      if (!localStorage.getItem("easyBike_clientId")) {
-        localStorage.setItem("easyBike_clientId", message.clientId);
-        console.log("ClientId salvo pela primeira vez:", message.clientId);
+    if (message.type === "serverClientId") {
+      wsClientId = message.clientId;
+
+      if (
+        loadUsageState() &&
+        wsClientId === localStorage.getItem("easyBike_lastWsClientId")
+      ) {
+        ws.send(
+          JSON.stringify({
+            type: "resumeSession",
+            bikeId: currentBikeId,
+            clientId: wsClientId,
+          })
+        );
+        statusText.textContent = `Status: Reconectando sessão para bicicleta ${currentBikeId}...`;
+        statusText.className = "status-pending";
+        bikeUsageInfo.style.display = "block";
+        bikeIdDisplay.textContent = currentBikeId;
+        startTimer();
       } else {
-        console.log("ClientId já existente, ignorando novo:", message.clientId);
+        if (localStorage.getItem("easyBike_currentBikeId")) {
+          console.warn("Estado local inconsistente. Limpando localStorage.");
+        }
+        clearUsageState();
+        ws.send(JSON.stringify({ type: "requestNewQr" }));
+        statusText.textContent = "Status: Conectado. Solicitando QR Code...";
+        statusText.className = "status-pending";
+        qrCodeContainer.style.display = "block";
+        bikeUsageInfo.style.display = "none";
       }
-    }
-
-    if (message.type === "init") {
+    } else if (message.type === "init") {
       const { qrId, externalUrl } = message;
       const qrCodeUrl = `${externalUrl}/verify/${qrId}`;
-      console.log("URL para o QR Code:", qrCodeUrl);
 
-      // 🔽 Adicione essa verificação antes de criar o novo QR Code
-      if (qr && typeof qr.clear === "function") {
-        qr.clear(); // limpa canvas SVG/canvas do QR anterior
+      if (qr) {
+        qr.clear();
+        qr = null;
       }
-      qrcodeDiv.innerHTML = ""; // limpa HTML residual, por garantia
+      qrcodeDiv.innerHTML = "";
 
       qr = new QRCode(qrcodeDiv, {
         text: qrCodeUrl,
@@ -118,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H,
       });
-
       statusText.textContent = "Status: QR Code gerado. Aguardando leitura...";
       statusText.className = "status-pending";
       qrCodeContainer.style.display = "block";
@@ -134,9 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       statusText.textContent = "Status: QR Code UTILIZADO!";
       statusText.className = "status-verified";
-      console.log(
-        `QR Code marcado como usado! Bicicleta ${currentBikeId} liberada.`
-      );
 
       qrCodeContainer.style.display = "none";
       bikeUsageInfo.style.display = "block";
@@ -144,47 +121,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
       startTimer();
     } else if (message.type === "usageEnded") {
-      console.log(
-        `Uso da bicicleta ${
-          message.bikeId
-        } finalizado. Tempo total: ${formatTime(message.tempoTotalMs)}.`
-      );
       statusText.textContent =
         "Status: Uso finalizado. Bicicleta disponível novamente!";
       statusText.className = "status-pending";
 
       clearUsageState();
-
       stopTimer();
       timeElapsedSpan.textContent = "00:00:00";
 
-      // Solicita um novo QR ao servidor para a próxima interação
       ws.send(JSON.stringify({ type: "requestNewQr" }));
-      qrCodeContainer.style.display = "block";
+      qrCodeContainer.style.display = "none";
       bikeUsageInfo.style.display = "none";
     } else if (message.type === "clearClientStateAndRequestNewQr") {
-      console.log("Servidor solicitou limpeza de estado e novo QR.");
       clearUsageState();
       stopTimer();
       timeElapsedSpan.textContent = "00:00:00";
-      // O servidor já enviou um 'init' logo após esta mensagem, então a UI será atualizada por ele.
-      // Apenas garantimos que o estado local está limpo.
       statusText.textContent =
         "Status: Sessão inválida. Gerando novo QR Code...";
       statusText.className = "status-pending";
-      // Oculta a info de uso, esperando o 'init' para mostrar o QR
       qrCodeContainer.style.display = "none";
       bikeUsageInfo.style.display = "none";
     }
   };
 
   ws.onclose = () => {
-    console.log("Desconectado do servidor WebSocket.");
     statusText.textContent =
       "Status: Desconectado do servidor. Tentando reconectar...";
     statusText.className = "status-pending";
-    // Não paramos o timer aqui para manter a contagem visível mesmo se a conexão cair,
-    // o ReconnectingWebSocket tentará reconectar.
   };
 
   ws.onerror = (error) => {
@@ -232,24 +195,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           const result = await response.json();
-          console.log("Uso finalizado via botão:", result.message);
-          // O servidor enviará uma mensagem WebSocket 'usageEnded', que será tratada no ws.onmessage
+          statusText.textContent = "Status: Finalizando uso localmente...";
+          statusText.className = "status-pending";
           clearUsageState();
           stopTimer();
           timeElapsedSpan.textContent = "00:00:00";
-          qrCodeContainer.style.display = "block";
           bikeUsageInfo.style.display = "none";
-          statusText.textContent =
-            "Status: Uso finalizado. Bicicleta disponível novamente!";
-          statusText.className = "status-pending";
+          qrCodeContainer.style.display = "none";
         } else {
           const errorData = await response.json();
-          console.error("Erro ao finalizar uso:", errorData.message);
+          console.error("Erro ao finalizar uso (HTTP):", errorData.message);
           alert(`Erro ao finalizar uso: ${errorData.message}`);
+          clearUsageState();
+          ws.send(JSON.stringify({ type: "requestNewQr" }));
+          statusText.textContent = "Status: Erro. Gerando novo QR Code...";
+          statusText.className = "status-pending";
+          qrCodeContainer.style.display = "none";
+          bikeUsageInfo.style.display = "none";
         }
       } catch (error) {
-        console.error("Erro de rede ao finalizar uso:", error);
+        console.error("Erro de rede ao finalizar uso (Fetch):", error);
         alert("Erro de conexão ao tentar finalizar o uso.");
+        clearUsageState();
+        ws.send(JSON.stringify({ type: "requestNewQr" }));
+        statusText.textContent =
+          "Status: Erro de rede. Gerando novo QR Code...";
+        statusText.className = "status-pending";
+        qrCodeContainer.style.display = "none";
+        bikeUsageInfo.style.display = "none";
       }
     } else {
       alert("Nenhuma bicicleta em uso para finalizar.");

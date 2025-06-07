@@ -1,14 +1,12 @@
-/* ===== ESTILOS GERAIS ===== */
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import "@fortawesome/fontawesome-free/css/all.css";
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Quicksand:wght@300..700&display=swap");
 
 body {
   margin: 0;
   padding: 0;
-  background-color: white; /* Fundo geral branco */
+  background-color: #f5f5f5;
   font-family: "Lexend", sans-serif;
+  color: #333333;
+  line-height: 1.6;
 }
 
 .container {
@@ -21,7 +19,6 @@ body {
   align-items: center;
 }
 
-/* ===== NAVBAR ===== */
 nav {
   background-color: #00695c;
   height: 70px;
@@ -29,29 +26,25 @@ nav {
   position: relative;
   z-index: 1000;
 }
-
 .nav-left h1 {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 600;
   color: white;
   margin: 0;
   font-size: 24px;
 }
-
 .nav-left a {
   text-decoration: none;
   color: white;
   display: flex;
   align-items: center;
 }
-
 .menu-toggle {
   display: none;
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
 }
-
 .nav-center {
   display: flex;
   gap: 50px;
@@ -60,11 +53,9 @@ nav {
   margin: 0;
   align-items: center;
 }
-
 .nav-center li {
   position: relative;
 }
-
 .nav-center li a {
   text-decoration: none;
   color: white;
@@ -73,19 +64,15 @@ nav {
   padding: 8px 0;
   display: block;
 }
-
 .nav-center li a:hover {
   opacity: 0.8;
 }
-
-/* ===== FAKE SELECT ===== */
 .fake-select-wrapper {
   position: relative;
   height: 100%;
   display: flex;
   align-items: center;
 }
-
 .fake-select-display {
   display: flex;
   align-items: center;
@@ -95,11 +82,9 @@ nav {
   padding: 8px 25px 8px 0;
   position: relative;
 }
-
 .fake-select-display:hover {
   opacity: 0.9;
 }
-
 .fake-select-options {
   position: absolute;
   top: calc(100% + 5px);
@@ -113,7 +98,6 @@ nav {
   z-index: 1001;
   animation: fadeIn 0.3s ease-out;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -124,7 +108,6 @@ nav {
     transform: translateY(0);
   }
 }
-
 .fake-select-options .option {
   padding: 12px 16px;
   color: white;
@@ -132,19 +115,15 @@ nav {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   transition: background-color 0.2s ease;
 }
-
 .fake-select-options .option:last-child {
   border-bottom: none;
 }
-
 .fake-select-options .option:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
 .fake-select-wrapper.open .fake-select-options {
   display: block;
 }
-
 .select-icon {
   margin-left: 8px;
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -154,12 +133,9 @@ nav {
   top: 50%;
   transform: translateY(-50%);
 }
-
 .fake-select-wrapper.open .select-icon {
   transform: translateY(-50%) rotate(-90deg);
 }
-
-/* ===== BOTÃO NAV-RIGHT ===== */
 .nav-right button {
   color: white;
   border: 1px solid white;
@@ -172,31 +148,101 @@ nav {
   font-size: 16px;
   transition: all 0.3s ease;
 }
-
 .nav-right button:hover {
   background-color: white;
   color: #00695c;
 }
 
-/* ****************************************** */
+.map-hero-section {
+  background: linear-gradient(135deg, #00695c 0%, #00897b 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.map-hero-section h1 {
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  color: white;
+}
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  opacity: 0.9;
+}
 
+.map-container {
+  max-width: 1200px;
+  margin: -40px auto 60px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+#mapid {
+  height: 600px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 105, 92, 0.18);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+.leaflet-popup-content {
+  font-family: "Lexend", sans-serif;
+  font-size: 14px;
+}
+.leaflet-popup-content b {
+  color: #00695c;
+  font-weight: 600;
+}
+.leaflet-popup-content .status-text {
+  text-transform: capitalize;
+  font-weight: 500;
+}
 
+.bike-marker-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+}
+.bike-marker-icon:hover {
+  transform: scale(1.15);
+  z-index: 1000 !important;
+}
+.bike-marker-icon i {
+  color: white;
+  font-size: 16px;
+}
 
+.bike-icon-disponivel {
+  background-color: #00897b;
+}
+.bike-icon-em_uso {
+  background-color: #d32f2f;
+}
+.bike-icon-manutencao {
+  background-color: #f57c00;
+}
 
-
-/* ===== FOOTER ===== */
 .footer {
   background-color: #eaeaea;
   color: black;
-  padding: 40px 0 0 0; /* Removemos o padding-bottom */
+  padding: 40px 0 0 0;
 }
-
 .footer .container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .footer-links ul {
   display: flex;
   gap: 30px;
@@ -206,9 +252,8 @@ nav {
   flex-wrap: wrap;
   justify-content: center;
 }
-
 .footer-links a {
-  color: black;
+  color: #000000;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -216,41 +261,28 @@ nav {
   display: inline-block;
   text-align: center;
 }
-
 .footer-links a:hover {
   color: #00695c;
   text-decoration: underline;
 }
-
-/* Área do copyright destacada */
 .footer-copyright {
-  background-color: #cfcfcf; /* Cor de fundo diferente */
+  background-color: #cfcfcf;
   width: 100%;
   padding: 20px 0;
-  margin-top: 30px; /* Espaço acima da área de copyright */
+  margin-top: 30px;
   text-align: center;
 }
-
 .footer-copyright p {
   color: #333333;
   font-size: 0.9rem;
   margin: 0;
 }
 
-/* ===== ESTILOS GERAIS RESPONSIVOS ===== */
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 15px;
-  }
-}
-
-/* ===== NAVBAR RESPONSIVA ===== */
 @media (max-width: 992px) {
   nav {
     height: auto;
     padding: 15px 20px;
   }
-
   .nav-center {
     flex-direction: column;
     gap: 15px;
@@ -264,21 +296,23 @@ nav {
     transition: transform 0.3s ease;
     z-index: 999;
   }
-
   .nav-center.active {
     transform: translateY(0);
   }
-
   .nav-right {
     margin-left: auto;
     padding-right: 40px;
   }
-
-  /* Menu hamburguer para mobile */
   .menu-toggle {
     display: block;
     cursor: pointer;
     padding: 10px;
+  }
+  .map-hero-section h1 {
+    font-size: 2rem;
+  }
+  #mapid {
+    height: 500px;
   }
 }
 
@@ -286,22 +320,32 @@ nav {
   .nav-left h1 {
     font-size: 20px;
   }
-
   .nav-right button {
     width: 90px;
     font-size: 14px;
     padding: 6px 10px;
   }
-}
-
-/* ===== FOOTER RESPONSIVO ===== */
-@media (max-width: 768px) {
   .footer-links ul {
     gap: 20px;
     flex-direction: column;
   }
-
   .footer-copyright {
     padding: 15px 0;
+  }
+  .map-hero-section {
+    padding: 40px 20px;
+  }
+  .map-hero-section h1 {
+    font-size: 1.8rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .map-container {
+    margin-top: -30px;
+    margin-bottom: 40px;
+  }
+  #mapid {
+    height: 450px;
   }
 }
