@@ -17,7 +17,7 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 
 const EXTERNAL_URL =
-  process.env.EXTERNAL_URL || "https://1594-191-255-149-4.ngrok-free.app"; // Sua URL do ngrok
+  process.env.EXTERNAL_URL || "https://7eb8-191-255-149-4.ngrok-free.app"; // Sua URL do ngrok
 
 const pool = new Pool({
   user: "postgres",
@@ -328,7 +328,6 @@ app.get("/verify/:qrId", async (req, res) => {
         bike.usage_start_time = Date.now();
         bikes.set(bikeIdToAssign, bike);
 
- 
         await pool.query(
           "UPDATE bikes SET status = $1, qr_id_current = $2, user_id_current = $3, usage_start_time = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5",
           ["em_uso", qrId, 1, bike.usage_start_time, bikeIdToAssign]
@@ -404,7 +403,6 @@ app.get("/verify/:qrId", async (req, res) => {
 });
 
 app.post("/end-use/:bikeId", async (req, res) => {
-
   const { bikeId } = req.params;
   const bike = bikes.get(bikeId);
 
@@ -509,9 +507,6 @@ server.listen(PORT, async () => {
           ('bike-001', 'Estação Fatec - Praça 19 de Janeiro - Boqueirão', 'disponivel', -24.004884, -46.412638),
           ('bike-002', 'Estação Tude Bastos - Rodoviária', 'disponivel', -23.999038, -46.413919),
           ('bike-003', 'Feirinha da Guilhermina - Av. Castelo Branco', 'manutencao', -24.013643, -46.42164),
-          ('bike-004', 'Estação Av. Kennedy - Tupi', 'disponivel', -24.0150, -46.4300), -- Novas coordenadas para a Tupi
-          ('bike-005', 'Estação Orla Boqueirão - Kiosque 10', 'disponivel', -24.0000, -46.4050),
-          ('bike-006', 'Estação Marechal Mallet - Forte', 'manutencao', -23.9980, -46.4070)
           ON CONFLICT (id) DO NOTHING; -- Evita erro se já existir
         `);
         console.log(
@@ -588,33 +583,6 @@ server.listen(PORT, async () => {
         usuario_atual: null,
         hora_inicio_uso: null,
         name: "Feirinha da Guilhermina - Av. Castelo Branco",
-      });
-      bikes.set("bike-004", {
-        id: "bike-004",
-        status: "disponivel",
-        location: { lat: -24.015, lon: -46.43 },
-        qr_id_current: null,
-        usuario_atual: null,
-        hora_inicio_uso: null,
-        name: "Estação Av. Kennedy - Tupi",
-      });
-      bikes.set("bike-005", {
-        id: "bike-005",
-        status: "disponivel",
-        location: { lat: -24.0, lon: -46.405 },
-        qr_id_current: null,
-        usuario_atual: null,
-        hora_inicio_uso: null,
-        name: "Estação Orla Boqueirão - Kiosque 10",
-      });
-      bikes.set("bike-006", {
-        id: "bike-006",
-        status: "manutencao",
-        location: { lat: -23.998, lon: -46.407 },
-        qr_id_current: null,
-        usuario_atual: null,
-        hora_inicio_uso: null,
-        name: "Estação Marechal Mallet - Forte",
       });
       console.log(
         "Map 'bikes' populado com dados de fallback hardcoded como último recurso."

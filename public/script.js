@@ -39,7 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   }
 
-  const ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
+  const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const ws = new ReconnectingWebSocket(
+    `${wsProtocol}//${window.location.host}`
+  );
 
   ws.onopen = () => {
     statusText.textContent = "Status: Conectando...";

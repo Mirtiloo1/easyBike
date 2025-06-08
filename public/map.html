@@ -166,7 +166,11 @@
             );
           }
         }
-        const ws = new ReconnectingWebSocket(`ws://${window.location.host}`);
+        const wsProtocol =
+          window.location.protocol === "https:" ? "wss:" : "ws:";
+        const ws = new ReconnectingWebSocket(
+          `${wsProtocol}//${window.location.host}`
+        );
         let mapClientId = null;
         ws.onopen = () => {
           console.log("Mapa: Conectado ao servidor WebSocket.");
@@ -256,7 +260,6 @@
           logout();
         } else {
           window.location.href = "login.html";
-
         }
       }
     </script>
