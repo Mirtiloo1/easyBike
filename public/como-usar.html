@@ -36,7 +36,7 @@
         </ul>
 
         <div class="nav-right">
-          <button onclick="window.location.href='login.html'">Entrar</button>
+          <button id="auth-button" onclick="handleAuthClick()">Entrar</button>
         </div>
 
         <div class="menu-toggle">
@@ -60,8 +60,14 @@
         <div class="step-card">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h3><i class="fas fa-map-marked-alt step-icon"></i> Encontre uma bicicleta</h3>
-            <p>Acesse a aba de <strong>Mapa</strong> e verifique os pontos que possuem bicicletas disponíveis para empréstimo.</p>
+            <h3>
+              <i class="fas fa-map-marked-alt step-icon"></i> Encontre uma
+              bicicleta
+            </h3>
+            <p>
+              Acesse a aba de <strong>Mapa</strong> e verifique os pontos que
+              possuem bicicletas disponíveis para empréstimo.
+            </p>
             <div class="step-image">
               <i class="fas fa-map"></i>
             </div>
@@ -72,7 +78,10 @@
           <div class="step-number">2</div>
           <div class="step-content">
             <h3><i class="fas fa-walking step-icon"></i> Dirija-se ao local</h3>
-            <p>Vá até a estação EasyBike mais conveniente para você, onde há bicicletas disponíveis.</p>
+            <p>
+              Vá até a estação EasyBike mais conveniente para você, onde há
+              bicicletas disponíveis.
+            </p>
             <div class="step-image">
               <i class="fas fa-location-arrow"></i>
             </div>
@@ -83,7 +92,10 @@
           <div class="step-number">3</div>
           <div class="step-content">
             <h3><i class="fas fa-sign-in-alt step-icon"></i> Faça login</h3>
-            <p>Acesse sua conta no site usando seu <strong>e-mail institucional</strong> e senha.</p>
+            <p>
+              Acesse sua conta no site usando seu
+              <strong>e-mail institucional</strong> e senha.
+            </p>
             <div class="step-image">
               <i class="fas fa-user-graduate"></i>
             </div>
@@ -93,8 +105,13 @@
         <div class="step-card">
           <div class="step-number">4</div>
           <div class="step-content">
-            <h3><i class="fas fa-qrcode step-icon"></i> Desbloqueie a bicicleta</h3>
-            <p>Escaneie o <strong>QR Code</strong> na bicicleta escolhida para liberar o uso.</p>
+            <h3>
+              <i class="fas fa-qrcode step-icon"></i> Desbloqueie a bicicleta
+            </h3>
+            <p>
+              Escaneie o <strong>QR Code</strong> na bicicleta escolhida para
+              liberar o uso.
+            </p>
             <div class="step-image">
               <i class="fas fa-mobile-alt"></i>
             </div>
@@ -104,8 +121,13 @@
         <div class="step-card">
           <div class="step-number">5</div>
           <div class="step-content">
-            <h3><i class="fas fa-bicycle step-icon"></i> Pedale com segurança</h3>
-            <p>Use a bicicleta com cuidado e respeite as regras de trânsito e segurança.</p>
+            <h3>
+              <i class="fas fa-bicycle step-icon"></i> Pedale com segurança
+            </h3>
+            <p>
+              Use a bicicleta com cuidado e respeite as regras de trânsito e
+              segurança.
+            </p>
             <div class="step-image">
               <i class="fas fa-helmet-safety"></i>
             </div>
@@ -115,8 +137,13 @@
         <div class="step-card">
           <div class="step-number">6</div>
           <div class="step-content">
-            <h3><i class="fas fa-parking step-icon"></i> Devolva a bicicleta</h3>
-            <p>Retorne a bicicleta a qualquer estação EasyBike e confirme a devolução no app.</p>
+            <h3>
+              <i class="fas fa-parking step-icon"></i> Devolva a bicicleta
+            </h3>
+            <p>
+              Retorne a bicicleta a qualquer estação EasyBike e confirme a
+              devolução no app.
+            </p>
             <div class="step-image">
               <i class="fas fa-check-circle"></i>
             </div>
@@ -128,11 +155,26 @@
         <div class="tips-card">
           <h2><i class="fas fa-lightbulb"></i> Dicas importantes</h2>
           <ul class="tips-list">
-            <li><i class="fas fa-check-circle"></i> Sempre verifique os freios e pneus antes de usar</li>
-            <li><i class="fas fa-check-circle"></i> Use capacete para sua segurança</li>
-            <li><i class="fas fa-check-circle"></i> Respeite o tempo máximo de empréstimo</li>
-            <li><i class="fas fa-check-circle"></i> Reporte qualquer problema com a bicicleta</li>
-            <li><i class="fas fa-check-circle"></i> Mantenha seu e-mail institucional atualizado</li>
+            <li>
+              <i class="fas fa-check-circle"></i> Sempre verifique os freios e
+              pneus antes de usar
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i> Use capacete para sua
+              segurança
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i> Respeite o tempo máximo de
+              empréstimo
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i> Reporte qualquer problema com
+              a bicicleta
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i> Mantenha seu e-mail
+              institucional atualizado
+            </li>
           </ul>
         </div>
       </section>
@@ -199,6 +241,62 @@
           });
         });
       });
+
+      // Verifica o status de autenticação ao carregar a página
+  document.addEventListener('DOMContentLoaded', async function() {
+    await checkAuthStatus();
+  });
+
+  // Função para verificar se o usuário está autenticado
+  async function checkAuthStatus() {
+    try {
+      const response = await fetch('/check-auth', {
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      const data = await response.json();
+      const authButton = document.getElementById('auth-button');
+      
+      if (response.ok && data.authenticated) {
+        authButton.textContent = 'Sair';
+        authButton.onclick = logout;
+      } else {
+        authButton.textContent = 'Entrar';
+        authButton.onclick = function() { window.location.href = 'login.html'; };
+      }
+    } catch (error) {
+      console.error('Erro ao verificar autenticação:', error);
+    }
+  }
+
+  // Função para logout
+  async function logout() {
+    try {
+      const response = await fetch('/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        window.location.reload(); // Recarrega a página para atualizar o estado
+      } else {
+        alert('Erro ao fazer logout');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  }
+
+  // Função para lidar com o clique no botão de autenticação
+  function handleAuthClick() {
+    const authButton = document.getElementById('auth-button');
+    if (authButton.textContent === 'Sair') {
+      logout();
+    } else {
+      window.location.href = 'login.html';
+    }
+  }
     </script>
   </body>
 </html>

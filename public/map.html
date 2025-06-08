@@ -15,6 +15,7 @@
     />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="reconnecting-websocket.min.js"></script>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <nav>
@@ -38,7 +39,7 @@
           <li><a href="map.html">Mapa</a></li>
         </ul>
         <div class="nav-right">
-          <button onclick="window.location.href='login.html'">Entrar</button>
+          <button id="auth-button" onclick="handleAuthClick()">Entrar</button>
         </div>
         <div class="menu-toggle">
           <i class="fas fa-bars"></i>
@@ -55,8 +56,8 @@
       </div>
     </header>
 
-    <main class="map-container">
-      <div id="mapid"></div>
+    <main class="map-content-wrapper">
+      <div class="container"><div id="mapid"></div></div>
     </main>
 
     <footer class="footer">
@@ -76,6 +77,7 @@
         </div>
       </div>
     </footer>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const menuToggle = document.querySelector(".menu-toggle");
@@ -104,7 +106,7 @@
             select.classList.remove("open");
           });
         });
-        const map = L.map("mapid").setView([-24.002, -46.402], 13);
+        const map = L.map("mapid").setView([-24.0055251, -46.4155748], 15);
         const markers = new Map();
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution:
@@ -130,36 +132,37 @@
             popupAnchor: [0, -32],
           });
         };
-        function updateBikeMarker(bikeId, newStatus, location, name) {
-          let marker = markers.get(bikeId);
+        function updateBikeMarker(bikeData) {
+          let marker = markers.get(bikeData.id);
           if (marker) {
-            marker.setIcon(createBikeIcon(newStatus));
+            marker.setIcon(createBikeIcon(bikeData.status));
             marker.setPopupContent(
-              `<b>${name}</b><br>ID: ${bikeId}<br>Status: <span id="status-${bikeId}">${newStatus}</span>`
+              `<b>${bikeData.name}</b><br>ID: ${bikeData.id}<br>Status: <span id="status-${bikeData.id}">${bikeData.status}</span>`
             );
             console.log(
-              `Mapa: Marcador da bike ${bikeId} atualizado para status: ${newStatus}`
+              `Mapa: Marcador da bike ${bikeData.id} atualizado para status: ${bikeData.status}`
             );
           } else if (
-            location &&
-            typeof location.lat === "number" &&
-            typeof location.lon === "number" &&
-            name
+            bikeData.location &&
+            typeof bikeData.location.lat === "number" &&
+            typeof bikeData.location.lon === "number" &&
+            bikeData.name
           ) {
             console.log(
-              `Mapa: Criando novo marcador para bike ${bikeId} com status: ${newStatus}`
+              `Mapa: Criando novo marcador para bike ${bikeData.id} com status: ${bikeData.status}`
             );
-            marker = L.marker([location.lat, location.lon], {
-              icon: createBikeIcon(newStatus),
+            marker = L.marker([bikeData.location.lat, bikeData.location.lon], {
+              icon: createBikeIcon(bikeData.status),
             })
               .addTo(map)
               .bindPopup(
-                `<b>${name}</b><br>ID: ${bikeId}<br>Status: <span id="status-${bikeId}">${newStatus}</span>`
+                `<b>${bikeData.name}</b><br>ID: ${bikeData.id}<br>Status: <span id="status-${bikeData.id}">${bikeData.status}</span>`
               );
-            markers.set(bikeId, marker);
+            markers.set(bikeData.id, marker);
           } else {
             console.warn(
-              `Mapa: Marcador para a bike ${bikeId} não encontrado e dados incompletos para criação. Status: ${newStatus}`
+              `Mapa: Marcador para a bike ${bikeData.id} não encontrado e dados incompletos para criação.`,
+              bikeData
             );
           }
         }
@@ -171,26 +174,21 @@
         };
         ws.onmessage = (event) => {
           const message = JSON.parse(event.data);
-          console.log("Mapa: Mensagem recebida do servidor:", message);
+          console.log("Mapa: Bikes recebidas:", message.bikes);
           if (message.type === "serverClientId") {
             mapClientId = message.clientId;
             console.log("Mapa: ClientId recebido e salvo:", mapClientId);
             ws.send(JSON.stringify({ type: "requestAllBikeStatuses" }));
           } else if (message.type === "allBikeStatuses") {
             message.bikes.forEach((bikeData) => {
-              updateBikeMarker(
-                bikeData.id,
-                bikeData.status,
-                bikeData.location,
-                bikeData.name
-              );
+              updateBikeMarker(bikeData);
             });
             console.log(
               "Mapa: Status de todas as bikes atualizado ao iniciar/reconectar."
             );
           } else if (message.type === "bikeStatusUpdate") {
             const { bikeId, status, location, name } = message;
-            updateBikeMarker(bikeId, status, location, name);
+            updateBikeMarker({ bikeId, status, location, name });
           }
         };
         ws.onclose = () => {
@@ -202,6 +200,65 @@
           console.error("Mapa: Erro no WebSocket:", error);
         };
       });
+
+      // Verifica o status de autenticação ao carregar a página
+      document.addEventListener("DOMContentLoaded", async function () {
+        await checkAuthStatus();
+      });
+
+      // Função para verificar se o usuário está autenticado
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch("/check-auth", {
+            method: "GET",
+            credentials: "include",
+          });
+
+          const data = await response.json();
+          const authButton = document.getElementById("auth-button");
+
+          if (response.ok && data.authenticated) {
+            authButton.textContent = "Sair";
+            authButton.onclick = logout;
+          } else {
+            authButton.textContent = "Entrar";
+            authButton.onclick = function () {
+              window.location.href = "login.html";
+            };
+          }
+        } catch (error) {
+          console.error("Erro ao verificar autenticação:", error);
+        }
+      }
+
+      // Função para logout
+      async function logout() {
+        try {
+          const response = await fetch("/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            window.location.reload(); // Recarrega a página para atualizar o estado
+          } else {
+            alert("Erro ao fazer logout");
+          }
+        } catch (error) {
+          console.error("Erro ao fazer logout:", error);
+        }
+      }
+
+      // Função para lidar com o clique no botão de autenticação
+      function handleAuthClick() {
+        const authButton = document.getElementById("auth-button");
+        if (authButton.textContent === "Sair") {
+          logout();
+        } else {
+          window.location.href = "login.html";
+
+        }
+      }
     </script>
   </body>
 </html>

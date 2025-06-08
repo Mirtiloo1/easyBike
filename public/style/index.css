@@ -1,14 +1,13 @@
 /* ===== ESTILOS GERAIS ===== */
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import "@fortawesome/fontawesome-free/css/all.css";
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Poppins:wght@400;500;600;700&display=swap");
 
 body {
   margin: 0;
   padding: 0;
-  background-color: white; /* Fundo geral branco */
+  background-color: #f5f5f5;
   font-family: "Lexend", sans-serif;
+  color: #333333;
+  line-height: 1.6;
 }
 
 .container {
@@ -16,9 +15,6 @@ body {
   margin: 0 auto;
   padding: 0 20px;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 /* ===== NAVBAR ===== */
@@ -30,8 +26,14 @@ nav {
   z-index: 1000;
 }
 
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .nav-left h1 {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 600;
   color: white;
   margin: 0;
@@ -178,59 +180,51 @@ nav {
   color: #00695c;
 }
 
-/* ===== MAIN CONTENT ===== */
-main {
-  background-color: #E5E5E5;
-  width: 100%;
+/* ===== HERO SECTION ===== */
+.hero-section {
+  background: linear-gradient(135deg, #00695c 0%, #00897b 100%);
+  color: white;
+  padding: 60px 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-main .container {
+.hero-content-wrapper {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 60px;
-  padding: 100px 20px;
+  justify-content: space-between;
+  gap: 40px;
 }
 
-.text-content {
+.hero-text {
   flex: 1;
-  min-width: 300px;
+  max-width: 600px;
+  z-index: 2;
 }
 
-main img {
-  height: 300px;
-  object-fit: contain;
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-main h1 {
+.hero-section h1 {
   font-family: "Poppins", sans-serif;
   font-size: 2.8rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  color: #00695c;
   font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 15px 0;
+  color: white;
 }
 
-main button {
-  margin-top: 20px;
-  background-color: #00695c;
-  color: white;
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  max-width: 500px;
+}
+
+.hero-button {
+  background-color: white;
+  color: #00695c;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 16px;
-  width: 180px;
-  height: 50px;
+  padding: 12px 25px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -238,144 +232,132 @@ main button {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-main button:hover {
-  background-color: #008d7d;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.hero-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-main p {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  max-width: 500px;
-  color: #333;
+.hero-image {
+  flex-shrink: 0;
+  animation: float 6s ease-in-out infinite;
 }
 
-/* SEÇÃO DE CARDS */
-
-/* Estilos dos Cards */
-
-.cards-section {
-    padding-top: 100px;
-  padding-bottom: 150px;
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.hero-image img {
+  max-width: 400px;
+  height: auto;
 }
 
-.cards-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-top: 40px;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }
 
-.card {
-  flex: 1;
-  min-width: 280px;
-  max-width: 200px;
-  padding: 30px;
-  border-radius: 8px;
-  background: #f3f3f3;
-  text-align: center;
-  transition: transform 0.3s ease;
-  border: 1px solid #acacac;
-  border-radius: 20px;
+/* ===== MAIN CONTENT ===== */
+.content-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
 }
 
-.card h3 {
-  font-family: poppins;
-  color: #00695c;
-}
-
-.card p {
-  font-family: lexend;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card-icon {
-  font-size: 2.5rem;
-  color: #00695c;
-  margin-bottom: 20px;
-}
-
-.section-title {
-  text-align: center;
-  color: white;
-  font-size: 2rem;
-}
-
-/* ===== SEÇÃO "COMO FUNCIONA" ===== */
-.como-funciona {
-  padding: 40px 0;
-  padding-bottom: 100px;
-  background-color: #00695c;
-}
-
-.passos-wrapper {
+/* ===== FEATURES/CARDS SECTION ===== */
+.features-section {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 80px;
-  margin-top: 50px;
-  justify-content: center; /* Isso ajuda a centralizar o grid */
-  width: 700px; /* Limita a largura do grid */
-  margin-left: auto;
-  margin-right: auto;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
 }
 
-.passo-card {
-  position: relative;
-  padding: 50px;
-  border-radius: 20px;
-  border-top-left-radius: 0px;
-  width: 200px;
-  height: 100px;
-  font-family: lexend;
-  font-weight: bold;
-  background-color: #f8f8f8;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.feature-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 105, 92, 0.1);
 }
 
-/* Número com fundo “invadindo” */
-.passo-numero {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #00695c;
-  color: #fff;
-  width: 60px;
-  height: 60px;
-  border-bottom-right-radius: 25px; /* Corrige a borda arredondada apenas no canto inferior direito */
-  border-top-left-radius: 0px;
-  font-size: 1.6rem;
-  font-weight: bold;
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 105, 92, 0.12);
+}
+
+.feature-content h3 {
+  color: #00695c;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+.step-icon {
+  margin-right: 12px;
+  font-size: 1.4rem;
+}
+
+.feature-content p {
+  margin-bottom: 0;
+  line-height: 1.7;
+}
+
+/* ===== HOW IT WORKS / TIPS SECTION ===== */
+.how-it-works-section {
+  margin-bottom: 60px;
+}
+
+.tips-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 105, 92, 0.1);
+}
+
+.tips-card h2 {
+  color: #00695c;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
   font-family: "Poppins", sans-serif;
-  z-index: 1;
+  font-weight: 600;
 }
 
-.passo-texto {
+.tips-card h2 i {
+  margin-right: 15px;
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tips-list li {
+  padding-left: 35px;
+  position: relative;
+  line-height: 1.6;
   font-size: 1.1rem;
-  color: #333;
-  line-height: 1.5;
+}
+
+.tips-list li i {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  color: #00695c;
+  font-size: 1.2rem;
 }
 
 /* ===== FOOTER ===== */
 .footer {
   background-color: #eaeaea;
   color: black;
-  padding: 40px 0 0 0; /* Removemos o padding-bottom */
+  padding: 40px 0 0 0;
 }
 
 .footer .container {
@@ -395,13 +377,10 @@ main p {
 }
 
 .footer-links a {
-  color: black;
+  color: #000000;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease;
-  padding: 5px;
-  display: inline-block;
-  text-align: center;
 }
 
 .footer-links a:hover {
@@ -409,12 +388,11 @@ main p {
   text-decoration: underline;
 }
 
-/* Área do copyright destacada */
 .footer-copyright {
-  background-color: #cfcfcf; /* Cor de fundo diferente */
+  background-color: #cfcfcf;
   width: 100%;
   padding: 20px 0;
-  margin-top: 30px; /* Espaço acima da área de copyright */
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -424,20 +402,13 @@ main p {
   margin: 0;
 }
 
-/* ===== ESTILOS GERAIS RESPONSIVOS ===== */
-@media (max-width: 1200px) {
-  .container {
-    padding: 0 15px;
-  }
-}
-
-/* ===== NAVBAR RESPONSIVA ===== */
+/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 992px) {
+  /* NAVBAR */
   nav {
     height: auto;
     padding: 15px 20px;
   }
-
   .nav-center {
     flex-direction: column;
     gap: 15px;
@@ -451,160 +422,42 @@ main p {
     transition: transform 0.3s ease;
     z-index: 999;
   }
-
   .nav-center.active {
     transform: translateY(0);
   }
-
   .nav-right {
     margin-left: auto;
     padding-right: 40px;
   }
-
-  /* Menu hamburguer para mobile */
   .menu-toggle {
     display: block;
-    cursor: pointer;
-    padding: 10px;
   }
+
+  /* HERO */
+  .hero-section { padding: 50px 20px; }
+  .hero-content-wrapper { flex-direction: column; text-align: center; }
+  .hero-text { order: 2; }
+  .hero-image { order: 1; margin-bottom: 20px; }
+  .hero-image img { max-width: 300px; }
+  .hero-section h1 { font-size: 2.2rem; }
+  .hero-subtitle { margin-left: auto; margin-right: auto; }
 }
 
 @media (max-width: 768px) {
-  .nav-left h1 {
-    font-size: 20px;
-  }
-
-  .nav-right button {
-    width: 90px;
-    font-size: 14px;
-    padding: 6px 10px;
-  }
-}
-
-/* ===== MAIN CONTENT RESPONSIVO ===== */
-@media (max-width: 992px) {
-  main .container {
-    flex-direction: column;
-    padding: 60px 20px;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .text-content {
-    order: 1;
-  }
-
-  main img {
-    height: 250px;
-    order: 2;
-  }
-
-  main h1 {
-    font-size: 2.2rem;
-  }
-
-  main p {
-    margin: 0 auto;
-  }
+  /* NAVBAR */
+  .nav-left h1 { font-size: 20px; }
+  .nav-right button { width: 90px; font-size: 14px; padding: 6px 10px; }
+  
+  /* FOOTER */
+  .footer-links ul { flex-direction: column; gap: 15px; }
+  .footer-copyright { padding: 15px 0; }
 }
 
 @media (max-width: 576px) {
-  main h1 {
-    font-size: 1.8rem;
-  }
+  /* HERO */
+  .hero-section h1 { font-size: 1.8rem; }
+  .hero-image img { max-width: 250px; }
 
-  main button {
-    width: 160px;
-    height: 45px;
-    font-size: 15px;
-  }
-}
-
-/* ===== SEÇÃO DE CARDS RESPONSIVA ===== */
-@media (max-width: 1200px) {
-  .cards-section {
-    padding: 80px 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .cards-wrapper {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .card {
-    min-width: 220px;
-    padding: 20px;
-  }
-
-}
-
-@media (max-width: 576px) {
-  .cards-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .card {
-    max-width: 100%;
-  }
-}
-
-/* ===== SEÇÃO "COMO FUNCIONA" RESPONSIVA ===== */
-@media (max-width: 992px) {
-  .como-funciona {
-    padding: 60px 0;
-  }
-
-  .passos-wrapper {
-    width: 100%;
-    max-width: 700px;
-    gap: 40px;
-  }
-
-  .passo-card {
-    padding: 40px 30px;
-    width: auto;
-    height: auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .passos-wrapper {
-    grid-template-columns: 1fr;
-    max-width: 500px;
-    gap: 30px;
-  }
-
-  .passo-card {
-    padding: 35px 25px;
-  }
-
-  .passo-numero {
-    width: 50px;
-    height: 50px;
-    font-size: 1.4rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .passo-card {
-    padding: 30px 20px;
-  }
-
-  .passo-texto {
-    font-size: 1rem;
-  }
-}
-
-/* ===== FOOTER RESPONSIVO ===== */
-@media (max-width: 768px) {
-  .footer-links ul {
-    gap: 20px;
-    flex-direction: column;
-  }
-
-  .footer-copyright {
-    padding: 15px 0;
-  }
+  /* FEATURES */
+  .features-section { grid-template-columns: 1fr; }
 }

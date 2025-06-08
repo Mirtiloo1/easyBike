@@ -2,7 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lexend:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import "@fortawesome/fontawesome-free/css/all.css";
 
 body {
   margin: 0;
@@ -33,7 +32,7 @@ nav {
 }
 
 .nav-left h1 {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 600;
   color: white;
   margin: 0;
@@ -216,9 +215,15 @@ nav {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /* ===== ABOUT CONTAINER ===== */
@@ -422,31 +427,31 @@ nav {
   .hero-section {
     padding: 60px 20px;
   }
-  
+
   .hero-section h1 {
     font-size: 2rem;
   }
-  
+
   .about-card {
     flex-direction: column;
     padding: 30px;
   }
-  
+
   .card-icon {
     margin-right: 0;
     margin-bottom: 20px;
   }
-  
+
   .join-section {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .join-content {
     padding-right: 0;
     margin-bottom: 30px;
   }
-  
+
   .join-image {
     margin-top: 20px;
     font-size: 4rem;
@@ -457,20 +462,22 @@ nav {
   .hero-section {
     padding: 50px 20px;
   }
-  
+
   .hero-section h1 {
     font-size: 1.8rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
-  .about-card, .grid-card {
+
+  .about-card,
+  .grid-card {
     padding: 25px;
   }
-  
-  .card-content h2, .join-content h2 {
+
+  .card-content h2,
+  .join-content h2 {
     font-size: 1.5rem;
   }
 }
@@ -479,15 +486,15 @@ nav {
   .hero-section h1 {
     font-size: 1.6rem;
   }
-  
+
   .about-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .join-section {
     padding: 30px 20px;
   }
-  
+
   .join-button {
     width: 100%;
   }

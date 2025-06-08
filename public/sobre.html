@@ -36,7 +36,7 @@
         </ul>
 
         <div class="nav-right">
-          <button onclick="window.location.href='login.html'">Entrar</button>
+          <button id="auth-button" onclick="handleAuthClick()">Entrar</button>
         </div>
 
         <div class="menu-toggle">
@@ -48,7 +48,9 @@
     <header class="hero-section">
       <div class="hero-content">
         <h1>EasyBike: Mobilidade Inteligente para Estudantes</h1>
-        <p class="hero-subtitle">Pedalando rumo a um futuro mais acessível e sustentável</p>
+        <p class="hero-subtitle">
+          Pedalando rumo a um futuro mais acessível e sustentável
+        </p>
         <div class="hero-bike-icon">
           <i class="fas fa-bicycle"></i>
         </div>
@@ -64,10 +66,10 @@
           <h2>O Que É o EasyBike?</h2>
           <p>
             O <strong>EasyBike</strong> é um sistema gratuito de empréstimo de
-            bicicletas voltado exclusivamente para estudantes. Inspirado em soluções
-            como o Bike Itaú, o projeto tem como missão facilitar o deslocamento de
-            quem mais precisa, oferecendo uma alternativa prática, ecológica e
-            acessível.
+            bicicletas voltado exclusivamente para estudantes. Inspirado em
+            soluções como o Bike Itaú, o projeto tem como missão facilitar o
+            deslocamento de quem mais precisa, oferecendo uma alternativa
+            prática, ecológica e acessível.
           </p>
         </div>
       </section>
@@ -84,12 +86,12 @@
               pontos de ônibus ou sem condições de arcar com transporte diário.
             </li>
             <li>
-              <strong>Autonomia no Deslocamento:</strong> Permite acesso facilitado
-              a terminais, pontos e escolas.
+              <strong>Autonomia no Deslocamento:</strong> Permite acesso
+              facilitado a terminais, pontos e escolas.
             </li>
             <li>
-              <strong>Sustentabilidade:</strong> Promove o uso de transporte limpo e
-              hábitos saudáveis.
+              <strong>Sustentabilidade:</strong> Promove o uso de transporte
+              limpo e hábitos saudáveis.
             </li>
           </ul>
         </div>
@@ -106,8 +108,8 @@
             </li>
             <li><strong>Desbloqueio:</strong> Rápido e prático via QR Code.</li>
             <li>
-              <strong>Estações:</strong> Localizadas em pontos estratégicos próximos
-              às instituições.
+              <strong>Estações:</strong> Localizadas em pontos estratégicos
+              próximos às instituições.
             </li>
           </ul>
         </div>
@@ -132,8 +134,9 @@
           <h3>Onde Está Disponível?</h3>
           <p>
             O EasyBike está em fase de implementação e será expandido
-            progressivamente para instituições cadastradas. Em breve, será possível
-            consultar o mapa de estações e planejar seus trajetos com facilidade.
+            progressivamente para instituições cadastradas. Em breve, será
+            possível consultar o mapa de estações e planejar seus trajetos com
+            facilidade.
           </p>
         </div>
       </section>
@@ -142,11 +145,16 @@
         <div class="join-content">
           <h2>Junte-se ao Movimento</h2>
           <p>
-            O EasyBike é mais do que um projeto de transporte. É uma iniciativa de
-            inclusão, sustentabilidade e cuidado com os estudantes. Vamos juntos
-            transformar a mobilidade estudantil.
+            O EasyBike é mais do que um projeto de transporte. É uma iniciativa
+            de inclusão, sustentabilidade e cuidado com os estudantes. Vamos
+            juntos transformar a mobilidade estudantil.
           </p>
-          <button class="join-button" onclick="window.location.href='login.html'">Cadastre-se Agora</button>
+          <button
+            class="join-button"
+            onclick="window.location.href='login.html'"
+          >
+            Cadastre-se Agora
+          </button>
         </div>
         <div class="join-image">
           <i class="fas fa-users"></i>
@@ -215,6 +223,62 @@
           });
         });
       });
+
+      // Verifica o status de autenticação ao carregar a página
+  document.addEventListener('DOMContentLoaded', async function() {
+    await checkAuthStatus();
+  });
+
+  // Função para verificar se o usuário está autenticado
+  async function checkAuthStatus() {
+    try {
+      const response = await fetch('/check-auth', {
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      const data = await response.json();
+      const authButton = document.getElementById('auth-button');
+      
+      if (response.ok && data.authenticated) {
+        authButton.textContent = 'Sair';
+        authButton.onclick = logout;
+      } else {
+        authButton.textContent = 'Entrar';
+        authButton.onclick = function() { window.location.href = 'login.html'; };
+      }
+    } catch (error) {
+      console.error('Erro ao verificar autenticação:', error);
+    }
+  }
+
+  // Função para logout
+  async function logout() {
+    try {
+      const response = await fetch('/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        window.location.reload(); // Recarrega a página para atualizar o estado
+      } else {
+        alert('Erro ao fazer logout');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  }
+
+  // Função para lidar com o clique no botão de autenticação
+  function handleAuthClick() {
+    const authButton = document.getElementById('auth-button');
+    if (authButton.textContent === 'Sair') {
+      logout();
+    } else {
+      window.location.href = 'login.html';
+    }
+  }
     </script>
   </body>
 </html>

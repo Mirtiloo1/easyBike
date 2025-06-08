@@ -39,23 +39,39 @@
     </main>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const loginForm = document.getElementById("loginForm");
+  document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("loginForm");
 
-        loginForm.addEventListener("submit", function (e) {
-          e.preventDefault();
+    loginForm.addEventListener("submit", async function (e) { // Adicionado async
+      e.preventDefault();
 
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-          if (email === "teste@fatec.sp.gov.br" && password === "123456") {
-            alert("Login realizado com sucesso!");
-            window.location.href = "index.html";
-          } else {
-            alert("E-mail ou senha incorretos.");
-          }
+      try {
+        const response = await fetch('/login', { // POST para a nova rota
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
         });
-      });
-    </script>
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(data.message);
+          // O servidor já configurou a sessão. Redirecionar para a página principal ou dashboard.
+          window.location.href = "index.html"; // ou "map.html" ou um dashboard
+        } else {
+          alert(`Erro: ${data.message}`);
+        }
+      } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        alert('Erro de conexão ao tentar fazer login.');
+      }
+    });
+  });
+</script>
   </body>
 </html>
