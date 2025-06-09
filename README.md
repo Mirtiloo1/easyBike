@@ -17,7 +17,6 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Testing](#testing)
 
 ---
 
@@ -42,48 +41,62 @@ This project empowers developers to build scalable and secure bike rental system
 
 ### Prerequisites
 
-This project requires the following dependencies:
+This project requires the following dependencies to be installed on your system:
 
-- **Programming Language**: JavaScript  
-- **Package Manager**: Npm
+- **Node.js**
+- **npm** (Node Package Manager)
+- **PostgreSQL**
 
 ---
 
 ### Installation
 
-Build easyBike from the source and install dependencies:
+To get a local copy up and running, follow these simple steps.
 
 1. **Clone the repository**:
-
     ```bash
-    git clone https://github.com/Mirtiloo/easyBike
+    git clone [https://github.com/Mirtiloo/easyBike](https://github.com/Mirtiloo/easyBike)
     ```
 
 2. **Navigate to the project directory**:
-
     ```bash
     cd easyBike
     ```
 
-3. **Install the dependencies**:
-
-    Using **npm**:
-
+3. **Install dependencies**:
     ```bash
     npm install
+    ```
+4. **Set up environment variables**:
+   - Create a `.env` file in the root of the project.
+   - Add your database connection string and a session secret:
+    ```env
+    DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE_NAME
+    SESSION_SECRET=your-super-secret-key-for-sessions
     ```
 
 ---
 
 ### Usage
 
-Run the project with:
+1.  **Start the Local Server:**
+    In the project directory, run the following command to start the Node.js server:
+    ```bash
+    node server.js
+    ```
+    You can also use the npm script if available:
+    ```bash
+    npm start
+    ```
+    The application will be running at `http://localhost:3000`.
 
-Using **npm**:
+2.  **Accessing via Ngrok (Optional):**
+    To expose your local server to the internet for testing or demonstration, you can use ngrok.
 
-```bash
-npm start
-
-npm test
-
-
+    - First, [download and set up ngrok](https://ngrok.com/download) from the official website.
+    - While your local server (`node server.js`) is running, open a **new terminal window**.
+    - Run the following command to create a public tunnel to your local port 3000:
+    ```bash
+    ngrok http 3000
+    ```
+    - Ngrok will display a public forwarding URL (e.g., `https://xxxx-xxxx.ngrok-free.app`). Open this URL in your browser to access your application from anywhere.
