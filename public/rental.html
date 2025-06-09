@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Aluguel - EasyBike</title>
+    <link rel="stylesheet" href="/style/rental.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>EasyBike</h1>
+    </header>
+
+    <div id="confirmation-screen">
+        <div class="bike-info">
+            <h2>Você está prestes a alugar:</h2>
+            <p id="bike-name"><span class="loader"></span>Carregando...</p>
+        </div>
+        <div class="rules">
+            <p>O tempo de uso é de <strong>20 minutos</strong>.</p>
+            <p>Confirme para iniciar o seu trajeto.</p>
+        </div>
+        <div id="message-area"></div>
+        <button id="confirm-rental-btn">Confirmar Aluguel</button>
+    </div>
+
+    <div id="timer-screen" style="display: none;">
+        <h2>Bicicleta em uso!</h2>
+        <div class="timer-circle">
+            <span id="timer-display">20:00</span>
+        </div>
+        <p>Tempo restante para a devolução.</p>
+        <button id="end-use-btn" class="end-button">Finalizar Uso</button>
+    </div>
+
+    <div id="feedback-screen" style="display: none;">
+        <div class="feedback-icon">✅</div>
+        <h2>Uso Finalizado!</h2>
+        <p>Obrigado por usar a EasyBike. Volte sempre!</p>
+        <a href="/map.html" class="button">Voltar ao Mapa</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const bikeId = new URLSearchParams(window.location.search).get('bikeId');
+
+        // Elementos do DOM
+        const confirmationScreen = document.getElementById('confirmation-screen');
+        const timerScreen = document.getElementById('timer-screen');
+        const feedbackScreen = document.getElementById('feedback-screen');
+        const bikeNameDisplay = document.getElementById('bike-name');
+        const confirmBtn = document.getElementById('confirm-rental-btn');
+        const timerDisplay = document.getElementById('timer-display');
+        const endUseBtn = document.getElementById('end-use-btn');
+        const messageArea = document.getElementById('message-area');
+        let timerInterval = null;
+
+        // Função para mostrar mensagens na tela
+        function showMessage(text, type = 'error') {
+            messageArea.textContent = text;
+            messageArea.className = `message ${type}`;
+            messageArea.style.display = 'block';
+        }
+
+        // Função para iniciar o timer
+        function startTimer(startTime) {
+            const totalDuration = 20 * 60;
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            let duration = totalDuration - elapsed;
+
+            timerInterval = setInterval(() => {
+                if (duration <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "00:00";
+                    endUseBtn.textContent = "Tempo Esgotado! Finalizar";
+                    return;
+                }
+                const minutes = Math.floor(duration / 60).toString().padStart(2, '0');
+                const seconds = (duration % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${minutes}:${seconds}`;
+                duration--;
+            }, 1000);
+        }
+
+        // Função principal que organiza a página
+        async function initializePage() {
+            if (!bikeId) {
+                showMessage("ID da Bicicleta inválido na URL.");
+                confirmBtn.disabled = true;
+                return;
+            }
+
+            try {
+                const statusResponse = await fetch(`/api/rental-status/${bikeId}`);
+                if (!statusResponse.ok && statusResponse.status === 401) {
+                    showMessage("Você precisa estar logado para alugar. Redirecionando...");
+                    setTimeout(() => window.location.href = '/login.html', 2000);
+                    return;
+                }
+                const statusData = await statusResponse.json();
+
+                const bikeInfoResponse = await fetch(`/api/bike-info/${bikeId}`);
+                const bikeInfo = await bikeInfoResponse.json();
+
+                if (!bikeInfoResponse.ok) {
+                    showMessage(bikeInfo.message || "Bicicleta não encontrada.");
+                    confirmBtn.disabled = true;
+                    return;
+                }
+
+                bikeNameDisplay.innerHTML = ''; // Limpa o "Carregando..."
+                bikeNameDisplay.textContent = bikeInfo.name;
+
+                if (statusData.inUseByUser) {
+                    confirmationScreen.style.display = 'none';
+                    timerScreen.style.display = 'block';
+                    startTimer(parseInt(statusData.startTime, 10));
+                } else {
+                    // A tela de confirmação já está visível por padrão
+                    confirmBtn.disabled = false;
+                }
+            } catch (error) {
+                showMessage("Erro de conexão. Tente recarregar a página.");
+            }
+        }
+
+        // Eventos dos botões
+        confirmBtn.addEventListener('click', async () => {
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = "Processando...";
+            messageArea.style.display = 'none';
+            try {
+                const response = await fetch(`/api/rent/${bikeId}`, { method: 'POST' });
+                const result = await response.json();
+                if (response.ok) {
+                    const statusRes = await fetch(`/api/rental-status/${bikeId}`);
+                    const statusData = await statusRes.json();
+                    confirmationScreen.style.display = 'none';
+                    timerScreen.style.display = 'block';
+                    startTimer(parseInt(statusData.startTime, 10));
+                } else {
+                    showMessage(result.message);
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = "Confirmar Aluguel";
+                }
+            } catch (error) {
+                showMessage("Erro de conexão ao tentar alugar.");
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = "Confirmar Aluguel";
+            }
+        });
+
+        endUseBtn.addEventListener('click', async () => {
+            if (!confirm("Tem certeza que deseja finalizar o uso?")) return;
+            endUseBtn.disabled = true;
+            endUseBtn.textContent = "Finalizando...";
+            try {
+                const response = await fetch(`/api/return/${bikeId}`, { method: 'POST' });
+                if (response.ok) {
+                    clearInterval(timerInterval);
+                    timerScreen.style.display = 'none';
+                    feedbackScreen.style.display = 'block';
+                } else {
+                    const result = await response.json();
+                    alert(`Erro: ${result.message}`); // Alert aqui ok, pois é um caso raro
+                    endUseBtn.disabled = false;
+                    endUseBtn.textContent = "Finalizar Uso";
+                }
+            } catch (error) {
+                alert("Erro de conexão ao finalizar.");
+                endUseBtn.disabled = false;
+                endUseBtn.textContent = "Finalizar Uso";
+            }
+        });
+
+        initializePage();
+    });
+</script>
+</body>
+</html>
