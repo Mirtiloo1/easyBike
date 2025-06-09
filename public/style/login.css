@@ -114,6 +114,24 @@ main {
   text-decoration: underline;
 }
 
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--cinza-texto);
+}
+
+.input-group .password-wrapper input {
+  padding-right: 45px;
+}
+
 /* Responsivo */
 @media (max-width: 480px) {
   .login-container {

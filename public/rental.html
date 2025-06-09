@@ -111,7 +111,7 @@
                     return;
                 }
 
-                bikeNameDisplay.innerHTML = ''; // Limpa o "Carregando..."
+                bikeNameDisplay.innerHTML = '';
                 bikeNameDisplay.textContent = bikeInfo.name;
 
                 if (statusData.inUseByUser) {
@@ -119,7 +119,6 @@
                     timerScreen.style.display = 'block';
                     startTimer(parseInt(statusData.startTime, 10));
                 } else {
-                    // A tela de confirmação já está visível por padrão
                     confirmBtn.disabled = false;
                 }
             } catch (error) {
@@ -127,7 +126,6 @@
             }
         }
 
-        // Eventos dos botões
         confirmBtn.addEventListener('click', async () => {
             confirmBtn.disabled = true;
             confirmBtn.textContent = "Processando...";
@@ -165,7 +163,7 @@
                     feedbackScreen.style.display = 'block';
                 } else {
                     const result = await response.json();
-                    alert(`Erro: ${result.message}`); // Alert aqui ok, pois é um caso raro
+                    alert(`Erro: ${result.message}`);
                     endUseBtn.disabled = false;
                     endUseBtn.textContent = "Finalizar Uso";
                 }

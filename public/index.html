@@ -1,262 +1,297 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EasyBike - Mobilidade Sustentável para Estudantes</title>
-  <link rel="stylesheet" href="style/index.css" />
-  <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
-</head>
-<body>
-<nav>
-  <div class="container">
-    <div class="nav-left">
-      <a href="index.html"><h1>EasyBike</h1></a>
-    </div>
-
-    <ul class="nav-center">
-      <li class="fake-select-wrapper">
-        <div class="fake-select-display">
-          <span>Onde estamos</span>
-          <i class="fas fa-chevron-down select-icon"></i>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EasyBike - Mobilidade Sustentável para Estudantes</title>
+    <link rel="stylesheet" href="style/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
         </div>
-        <div class="fake-select-options">
-          <a href="map.html?city=santos" class="option">Santos</a>
-          <a href="map.html?city=praia-grande" class="option">Praia Grande</a>
-          <a href="map.html?city=sao-vicente" class="option">São Vicente</a>
+
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span>
+              <i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <a href="map.html?city=santos" class="option">Santos</a>
+              <a href="map.html?city=praia-grande" class="option"
+                >Praia Grande</a
+              >
+              <a href="map.html?city=sao-vicente" class="option">São Vicente</a>
+            </div>
+          </li>
+          <li><a href="como-usar.html">Como usar</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button id="auth-button">Entrar</button>
         </div>
-      </li>
-      <li><a href="como-usar.html">Como usar</a></li>
-      <li><a href="sobre.html">Sobre</a></li>
-      <li><a href="map.html">Mapa</a></li>
-    </ul>
 
-    <div class="nav-right">
-      <button id="auth-button" onclick="handleAuthClick()">Entrar</button>
-    </div>
-
-    <div class="menu-toggle">
-      <i class="fas fa-bars"></i>
-    </div>
-  </div>
-</nav>
-
-<header class="hero-section">
-  <div class="container hero-content-wrapper">
-    <div class="hero-text">
-      <h1>Transforme seu trajeto em algo sustentável.</h1>
-      <p class="hero-subtitle">
-        O EasyBike é um sistema gratuito de empréstimo de bicicletas
-        exclusivo para estudantes da sua instituição. Rápido, prático e
-        ecológico.
-      </p>
-      <button class="hero-button" onclick="handlePedalarClick()">
-        Quero pedalar
-      </button>
-    </div>
-    <div class="hero-image">
-      <img src="img/bike.png" alt="Ilustração de uma pessoa andando de bicicleta" />
-    </div>
-  </div>
-</header>
-
-<main class="content-container">
-  <section class="features-section">
-    <div class="feature-card">
-      <div class="feature-content">
-        <h3>
-          <i class="fas fa-bicycle step-icon"></i> Mobilidade Gratuita
-        </h3>
-        <p>
-          Pegue uma bicicleta em um ponto e devolva em outro, sem custo.
-        </p>
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
       </div>
-    </div>
+    </nav>
 
-    <div class="feature-card">
-      <div class="feature-content">
-        <h3>
-          <i class="fas fa-school step-icon"></i> Para Estudantes
-        </h3>
-        <p>
-          Serviço exclusivo para alunos de instituições públicas parceiras.
-        </p>
+    <header class="hero-section">
+      <div class="container hero-content-wrapper">
+        <div class="hero-text">
+          <h1>Transforme seu trajeto em algo sustentável.</h1>
+          <p class="hero-subtitle">
+            O EasyBike é um sistema gratuito de empréstimo de bicicletas
+            exclusivo para estudantes da sua instituição. Rápido, prático e
+            ecológico.
+          </p>
+          <button class="hero-button" onclick="handlePedalarClick()">
+            Quero pedalar
+          </button>
+        </div>
+        <div class="hero-image">
+          <img
+            src="img/bike.png"
+            alt="Ilustração de uma pessoa andando de bicicleta"
+          />
+        </div>
       </div>
-    </div>
+    </header>
 
-    <div class="feature-card">
-      <div class="feature-content">
-        <h3>
-          <i class="fas fa-leaf step-icon"></i> Sustentável e Saudável
-        </h3>
-        <p>Reduza o impacto ambiental enquanto cuida da sua saúde.</p>
+    <main class="content-container">
+      <section class="features-section">
+        <div class="feature-card">
+          <div class="feature-content">
+            <h3>
+              <i class="fas fa-bicycle step-icon"></i> Mobilidade Gratuita
+            </h3>
+            <p>
+              Pegue uma bicicleta em um ponto e devolva em outro, sem custo.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-content">
+            <h3><i class="fas fa-school step-icon"></i> Para Estudantes</h3>
+            <p>
+              Serviço exclusivo para alunos de instituições públicas parceiras.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-content">
+            <h3>
+              <i class="fas fa-leaf step-icon"></i> Sustentável e Saudável
+            </h3>
+            <p>Reduza o impacto ambiental enquanto cuida da sua saúde.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-it-works-section">
+        <div class="tips-card">
+          <h2><i class="fas fa-cogs"></i> Como funciona?</h2>
+          <ul class="tips-list">
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <strong>Faça login:</strong> Acesse com seu e-mail institucional.
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <strong>Encontre no mapa:</strong> Visualize as estações
+              disponíveis.
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <strong>Desbloqueie:</strong> Retire sua bicicleta escaneando o QR
+              Code.
+            </li>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <strong>Pedale e devolva:</strong> Use e devolva em qualquer
+              estação EasyBike.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="footer-logo">EasyBike</a>
+            <p class="footer-slogan">Mobilidade sustentável para estudantes</p>
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <h3 class="footer-title">Navegação</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="map.html">Mapa</a></li>
+              <li><a href="como-usar.html">Como Usar</a></li>
+              <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-contact">
+            <h3 class="footer-title">Contato</h3>
+            <ul>
+              <li><i class="fas fa-envelope"></i> contato@easybike.com</li>
+              <li><i class="fas fa-phone"></i> (12) 3456-7890</li>
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Praia Grande, SP - Brasil
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <section class="how-it-works-section">
-    <div class="tips-card">
-      <h2><i class="fas fa-cogs"></i> Como funciona?</h2>
-      <ul class="tips-list">
-        <li>
-          <i class="fas fa-check-circle"></i>
-          <strong>Faça login:</strong> Acesse com seu e-mail institucional.
-        </li>
-        <li>
-          <i class="fas fa-check-circle"></i>
-          <strong>Encontre no mapa:</strong> Visualize as estações
-          disponíveis.
-        </li>
-        <li>
-          <i class="fas fa-check-circle"></i>
-          <strong>Desbloqueie:</strong> Retire sua bicicleta escaneando o QR
-          Code.
-        </li>
-        <li>
-          <i class="fas fa-check-circle"></i>
-          <strong>Pedale e devolva:</strong> Use e devolva em qualquer
-          estação EasyBike.
-        </li>
-      </ul>
-    </div>
-  </section>
-</main>
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+          <div class="footer-legal">
+            <a href="#">Termos de Uso</a>
+            <a href="#">Política de Privacidade</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-links">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="map.html">Mapa</a></li>
-        <li><a href="como-usar.html">Como Usar</a></li>
-        <li><a href="sobre.html">Sobre</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-copyright">
-    <div class="container">
-      <p>© 2025 EasyBike. Todos os direitos reservados.</p>
-    </div>
-  </div>
-</footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navCenter = document.querySelector(".nav-center");
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.querySelector(".menu-toggle");
-    const navCenter = document.querySelector(".nav-center");
+        menuToggle.addEventListener("click", () => {
+          navCenter.classList.toggle("active");
+        });
 
-    menuToggle.addEventListener("click", () => {
-      navCenter.classList.toggle("active");
-    });
+        document.querySelectorAll(".nav-center a").forEach((link) => {
+          link.addEventListener("click", () => {
+            navCenter.classList.remove("active");
+          });
+        });
 
-    document.querySelectorAll(".nav-center a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navCenter.classList.remove("active");
-      });
-    });
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
 
-    const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            select.classList.toggle("open");
 
-    fakeSelects.forEach((select) => {
-      const display = select.querySelector(".fake-select-display");
-      display.addEventListener("click", function (e) {
-        e.stopPropagation();
-        select.classList.toggle("open");
+            fakeSelects.forEach((otherSelect) => {
+              if (otherSelect !== select) {
+                otherSelect.classList.remove("open");
+              }
+            });
+          });
+        });
 
-        fakeSelects.forEach((otherSelect) => {
-          if (otherSelect !== select) {
-            otherSelect.classList.remove("open");
-          }
+        document.addEventListener("click", function () {
+          fakeSelects.forEach((select) => {
+            select.classList.remove("open");
+          });
         });
       });
-    });
 
-    document.addEventListener("click", function () {
-      fakeSelects.forEach((select) => {
-        select.classList.remove("open");
-      });
-    });
-  });
+      async function handlePedalarClick() {
+        try {
+          const response = await fetch("/check-auth", {
+            method: "GET",
+            credentials: "include",
+          });
 
-  // FUNÇÃO COM O REDIRECIONAMENTO CORRIGIDO
-  async function handlePedalarClick() {
-    try {
-      const response = await fetch("/check-auth", {
-        method: "GET",
-        credentials: "include",
-      });
+          const data = await response.json();
 
-      const data = await response.json();
-
-      if (response.ok && data.authenticated) {
-        // A linha que abria 'teste.html' foi REMOVIDA.
-        window.location.href = "/map.html";
-      } else {
-        window.location.href = "/login.html";
+          if (response.ok && data.authenticated) {
+            window.location.href = "/map.html";
+          } else {
+            window.location.href = "/login.html";
+          }
+        } catch (error) {
+          console.error("Erro ao verificar autenticação:", error);
+          window.location.href = "/login.html";
+        }
       }
-    } catch (error) {
-      console.error("Erro ao verificar autenticação:", error);
-      window.location.href = "/login.html";
-    }
-  }
 
-  // O restante do script permanece igual...
-  document.addEventListener("DOMContentLoaded", async function () {
-    await checkAuthStatus();
-  });
-
-  async function checkAuthStatus() {
-    try {
-      const response = await fetch("/check-auth", {
-        method: "GET",
-        credentials: "include",
+      document.addEventListener("DOMContentLoaded", async function () {
+        await checkAuthStatus();
       });
 
-      const data = await response.json();
-      const authButton = document.getElementById("auth-button");
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch("/check-auth", {
+            method: "GET",
+            credentials: "include",
+          });
 
-      if (response.ok && data.authenticated) {
-        authButton.textContent = "Sair";
-        authButton.onclick = logout;
-      } else {
-        authButton.textContent = "Entrar";
-        authButton.onclick = function () {
+          const data = await response.json();
+          const authButton = document.getElementById("auth-button");
+
+          if (response.ok && data.authenticated) {
+            authButton.textContent = "Sair";
+            authButton.onclick = logout;
+          } else {
+            authButton.textContent = "Entrar";
+            authButton.onclick = function () {
+              window.location.href = "login.html";
+            };
+          }
+        } catch (error) {
+          console.error("Erro ao verificar autenticação:", error);
+        }
+      }
+
+      async function logout() {
+        try {
+          const response = await fetch("/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            alert("Erro ao fazer logout");
+          }
+        } catch (error) {
+          console.error("Erro ao fazer logout:", error);
+        }
+      }
+
+      function handleAuthClick() {
+        const authButton = document.getElementById("auth-button");
+        if (authButton.textContent === "Sair") {
+          logout();
+        } else {
           window.location.href = "login.html";
-        };
+        }
       }
-    } catch (error) {
-      console.error("Erro ao verificar autenticação:", error);
-    }
-  }
-
-  async function logout() {
-    try {
-      const response = await fetch("/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        window.location.reload();
-      } else {
-        alert("Erro ao fazer logout");
-      }
-    } catch (error) {
-      console.error("Erro ao fazer logout:", error);
-    }
-  }
-
-  function handleAuthClick() {
-    const authButton = document.getElementById("auth-button");
-    if (authButton.textContent === "Sair") {
-      logout();
-    } else {
-      window.location.href = "login.html";
-    }
-  }
-</script>
-</body>
+    </script>
+  </body>
 </html>

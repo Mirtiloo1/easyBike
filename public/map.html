@@ -1,220 +1,421 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mapa - EasyBike</title>
-  <link rel="stylesheet" href="style/map.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="reconnecting-websocket.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-</head>
-<body>
-<nav>
-  <div class="container">
-    <div class="nav-left"><a href="index.html"><h1>EasyBike</h1></a></div>
-    <ul class="nav-center">
-      <li class="fake-select-wrapper">
-        <div class="fake-select-display"><span>Onde estamos</span><i class="fas fa-chevron-down select-icon"></i></div>
-        <div class="fake-select-options">
-          <div class="option" data-city="santos">Santos</div>
-          <div class="option" data-city="praia-grande">Praia Grande</div>
-          <div class="option" data-city="sao-vicente">São Vicente</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa - EasyBike</title>
+    <link rel="stylesheet" href="style/map.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="reconnecting-websocket.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <a href="index.html"><h1>EasyBike</h1></a>
         </div>
-      </li>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="como-usar.html">Como usar</a></li>
-      <li><a href="sobre.html">Sobre</a></li>
-      <li><a href="map.html">Mapa</a></li>
-    </ul>
-    <div class="nav-right"><button id="auth-button">Entrar</button></div>
-    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
-  </div>
-</nav>
+        <ul class="nav-center">
+          <li class="fake-select-wrapper">
+            <div class="fake-select-display">
+              <span>Onde estamos</span
+              ><i class="fas fa-chevron-down select-icon"></i>
+            </div>
+            <div class="fake-select-options">
+              <div class="option" data-city="santos">Santos</div>
+              <div class="option" data-city="praia-grande">Praia Grande</div>
+              <div class="option" data-city="sao-vicente">São Vicente</div>
+            </div>
+          </li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="como-usar.html">Como usar</a></li>
+          <li><a href="sobre.html">Sobre</a></li>
+          <li><a href="map.html">Mapa</a></li>
+        </ul>
+        <div class="nav-right"><button id="auth-button">Entrar</button></div>
+        <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+      </div>
+    </nav>
 
-<header class="map-hero-section">
-  <div class="hero-content"><h1>Nossas Estações</h1><p class="hero-subtitle">Encontre as bicicletas disponíveis perto de você em tempo real.</p></div>
-</header>
+    <header class="map-hero-section">
+      <div class="hero-content">
+        <h1>Nossas Estações</h1>
+        <p class="hero-subtitle">
+          Encontre as bicicletas disponíveis perto de você em tempo real.
+        </p>
+      </div>
+    </header>
 
-<main class="map-content-wrapper">
-  <div class="container">
-    <div id="mapid"></div>
-    <button class="qr-scanner-button" id="scan-qr-button" title="Escanear QR Code"><i class="fas fa-qrcode"></i></button>
-  </div>
-</main>
+    <main class="map-content-wrapper">
+      <div class="container">
+        <div id="mapid"></div>
+        <button
+          class="qr-scanner-button"
+          id="scan-qr-button"
+          title="Escanear QR Code"
+        >
+          <i class="fas fa-qrcode"></i>
+        </button>
+      </div>
+    </main>
 
-<div id="qr-scanner-backdrop">
-  <div class="scanner-modal-content">
-    <button id="qr-reader-close-button">&times;</button>
-    <h3>Aponte para o QR Code</h3>
-    <div id="qr-reader">
-      <div class="scanner-line"></div>
+    <div id="qr-scanner-backdrop">
+      <div class="scanner-modal-content">
+        <button id="qr-reader-close-button">&times;</button>
+        <h3>Aponte para o QR Code</h3>
+        <div id="qr-reader">
+          <div class="scanner-line"></div>
+        </div>
+        <p>
+          Posicione o código da bicicleta na área da câmera para iniciar o
+          aluguel.
+        </p>
+      </div>
     </div>
-    <p>Posicione o código da bicicleta na área da câmera para iniciar o aluguel.</p>
-  </div>
-</div>
 
-<div id="bike-qr-modal-backdrop"></div>
-<div id="bike-qr-modal">
-  <h3 id="bike-qr-modal-title"></h3>
-  <div id="bike-qr-modal-code"></div>
-  <p>Use o leitor de QR Code ou o app do seu banco para alugar.</p>
-  <button id="bike-qr-modal-close">Fechar</button>
-</div>
+    <div id="bike-qr-modal-backdrop"></div>
+    <div id="bike-qr-modal">
+      <h3 id="bike-qr-modal-title"></h3>
+      <div id="bike-qr-modal-code"></div>
+      <p>Use o leitor de QR Code ou o app do seu banco para alugar.</p>
+      <button id="bike-qr-modal-close">Fechar</button>
+    </div>
 
-<footer class="footer">
-  <div class="container"><div class="footer-links"><ul><li><a href="index.html">Home</a></li><li><a href="map.html">Mapa</a></li><li><a href="como-usar.html">Como Usar</a></li><li><a href="sobre.html">Sobre</a></li></ul></div></div><div class="footer-copyright"><div class="container"><p>© 2025 EasyBike. Todos os direitos reservados.</p></div></div>
-</footer>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="footer-logo">EasyBike</a>
+            <p class="footer-slogan">Mobilidade sustentável para estudantes</p>
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+            </div>
+          </div>
 
-<script>
-  // O JavaScript continua o mesmo da versão anterior, pois as lógicas de clique e mapa estão corretas.
-  // As mudanças são primariamente no HTML acima e no CSS que virá a seguir.
-  let currentUser = { authenticated: false, userId: null, currentRentalId: null };
-  const markers = new Map();
-  function showBikeQrCode(bikeId) {
-    const bikeData = markers.get(bikeId)?.options.bikeData;
-    if (!bikeData) return;
-    const qrUrl = `${window.location.origin}/verify/${bikeId}`;
-    const modal = document.getElementById('bike-qr-modal');
-    const backdrop = document.getElementById('bike-qr-modal-backdrop');
-    const title = document.getElementById('bike-qr-modal-title');
-    const codeContainer = document.getElementById('bike-qr-modal-code');
-    title.textContent = bikeData.name;
-    codeContainer.innerHTML = "";
-    new QRCode(codeContainer, { text: qrUrl, width: 200, height: 200 });
-    modal.style.display = 'block';
-    backdrop.style.display = 'block';
-  }
-  document.addEventListener("DOMContentLoaded", function () {
-    const cityLocations = {
-      'santos': { lat: -23.95, lon: -46.33, zoom: 14 },
-      'praia-grande': { lat: -24.005, lon: -46.41, zoom: 14 },
-      'sao-vicente': { lat: -23.963, lon: -46.39, zoom: 14 }
-    };
-    const map = L.map("mapid");
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-    function setMapView(cityKey) {
-      const defaultLocation = cityLocations['praia-grande'];
-      const location = cityLocations[cityKey] || defaultLocation;
-      map.setView([location.lat, location.lon], location.zoom);
-    }
-    const urlParams = new URLSearchParams(window.location.search);
-    const cityParam = urlParams.get('city');
-    setMapView(cityParam);
-    setTimeout(() => map.invalidateSize(), 150);
-    const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
-    fakeSelects.forEach((select) => {
-      const display = select.querySelector(".fake-select-display");
-      display.addEventListener("click", function (e) {
-        e.stopPropagation();
-        const wasOpen = select.classList.contains("open");
-        fakeSelects.forEach(s => s.classList.remove("open"));
-        if (!wasOpen) select.classList.add("open");
-      });
-      const cityOptions = select.querySelectorAll(".fake-select-options .option");
-      cityOptions.forEach(option => {
-        option.addEventListener('click', function() {
-          const cityKey = this.getAttribute('data-city');
-          setMapView(cityKey);
+          <div class="footer-links">
+            <h3 class="footer-title">Navegação</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="map.html">Mapa</a></li>
+              <li><a href="como-usar.html">Como Usar</a></li>
+              <li><a href="sobre.html">Sobre</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-contact">
+            <h3 class="footer-title">Contato</h3>
+            <ul>
+              <li><i class="fas fa-envelope"></i> contato@easybike.com</li>
+              <li><i class="fas fa-phone"></i> (12) 3456-7890</li>
+              <li>
+                <i class="fas fa-map-marker-alt"></i> Praia Grande, SP - Brasil
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-copyright">
+        <div class="container">
+          <p>© 2025 EasyBike. Todos os direitos reservados.</p>
+          <div class="footer-legal">
+            <a href="#">Termos de Uso</a>
+            <a href="#">Política de Privacidade</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      let currentUser = {
+        authenticated: false,
+        userId: null,
+        currentRentalId: null,
+      };
+      const markers = new Map();
+
+      function showBikeQrCode(bikeId) {
+        const bikeData = markers.get(bikeId)?.options.bikeData;
+        if (!bikeData) return;
+        const qrUrl = `${window.location.origin}/verify/${bikeId}`;
+        const modal = document.getElementById("bike-qr-modal");
+        const backdrop = document.getElementById("bike-qr-modal-backdrop");
+        const title = document.getElementById("bike-qr-modal-title");
+        const codeContainer = document.getElementById("bike-qr-modal-code");
+        title.textContent = bikeData.name;
+        codeContainer.innerHTML = "";
+        new QRCode(codeContainer, { text: qrUrl, width: 200, height: 200 });
+        modal.style.display = "block";
+        backdrop.style.display = "block";
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const cityLocations = {
+          santos: { lat: -23.95, lon: -46.33, zoom: 14 },
+          "praia-grande": { lat: -24.005, lon: -46.41, zoom: 14 },
+          "sao-vicente": { lat: -23.963, lon: -46.39, zoom: 14 },
+        };
+
+        const map = L.map("mapid");
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        function setMapView(cityKey) {
+          const defaultLocation = cityLocations["praia-grande"];
+          const location = cityLocations[cityKey] || defaultLocation;
+          map.setView([location.lat, location.lon], location.zoom);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const cityParam = urlParams.get("city");
+        setMapView(cityParam);
+        setTimeout(() => map.invalidateSize(), 150);
+
+        const fakeSelects = document.querySelectorAll(".fake-select-wrapper");
+        fakeSelects.forEach((select) => {
+          const display = select.querySelector(".fake-select-display");
+          display.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const wasOpen = select.classList.contains("open");
+            fakeSelects.forEach((s) => s.classList.remove("open"));
+            if (!wasOpen) select.classList.add("open");
+          });
+          const cityOptions = select.querySelectorAll(
+            ".fake-select-options .option"
+          );
+          cityOptions.forEach((option) => {
+            option.addEventListener("click", function () {
+              const cityKey = this.getAttribute("data-city");
+              setMapView(cityKey);
+            });
+          });
         });
-      });
-    });
-    document.addEventListener("click", () => fakeSelects.forEach(select => select.classList.remove("open")));
-    const authButton = document.getElementById("auth-button");
-    const qrBackdrop = document.getElementById('qr-scanner-backdrop');
-    const scanButton = document.getElementById('scan-qr-button');
-    const closeButton = document.getElementById('qr-reader-close-button');
-    const bikeQrModal = document.getElementById('bike-qr-modal');
-    const bikeQrModalBackdrop = document.getElementById('bike-qr-modal-backdrop');
-    const bikeQrModalClose = document.getElementById('bike-qr-modal-close');
-    let html5QrCode = null;
-    const createInstitutionIcon = () => L.divIcon({ html: '<i class="fas fa-school"></i>', className: 'institution-marker-icon', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] });
-    const institutions = [ { name: "FATEC Praia Grande (Boqueirão)", lat: -24.0058239, lon: -46.4145112 }, { name: "FATEC Santos (Rubens Lara)", lat: -23.9432351, lon: -46.3290929 }, { name: "ETEC São Vicente (Dr. Ruth Cardoso)", lat: -23.965070, lon: -46.383774 }, { name: "ETEC Praia Grande (Guilermina)", lat: -24.008444, lon: -46.435356 }, { name: "ETEC de Santos (Aristóteles Ferreira)", lat: -23.979627, lon: -46.309542 }, ];
-    institutions.forEach(inst => L.marker([inst.lat, inst.lon], { icon: createInstitutionIcon() }).addTo(map).bindPopup(`<b>${inst.name}</b>`));
-    const createBikeIcon = (status) => {
-      let className = "bike-icon-disponivel";
-      if (status === "em_uso") className = "bike-icon-em_uso";
-      else if (status === "manutencao") className = "bike-icon-manutencao";
-      return L.divIcon({ html: '<i class="fas fa-bicycle"></i>', className: `bike-marker-icon ${className}`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] });
-    };
-    function updateBikeMarker(bikeData) {
-      const userIdOnBike = bikeData.user_id_current;
-      let popupContent = `<b>${bikeData.name}</b><br>Status: ${bikeData.status.replace('_', ' ')}`;
-      if (bikeData.status === 'disponivel' && currentUser.authenticated) {
-        popupContent += `<br><br><button class="popup-button" onclick="showBikeQrCode('${bikeData.id}')">Iniciar Aluguel</button>`;
-      } else if (bikeData.status === 'em_uso' && userIdOnBike === currentUser.userId) {
-        popupContent += `<br><i>(Esta bicicleta está em uso por você)</i>`;
-      } else if (bikeData.status === 'em_uso') {
-        popupContent += `<br><i>(Em uso por outro usuário)</i>`;
-      }
-      let marker = markers.get(bikeData.id);
-      if (marker) {
-        marker.setIcon(createBikeIcon(bikeData.status));
-        marker.setPopupContent(popupContent);
-        marker.options.bikeData = bikeData;
-      } else {
-        marker = L.marker([bikeData.location.lat, bikeData.location.lon], { icon: createBikeIcon(bikeData.status), bikeData: bikeData }).addTo(map).bindPopup(popupContent);
-        markers.set(bikeData.id, marker);
-      }
-    }
-    const ws = new ReconnectingWebSocket(`${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}`);
-    ws.onopen = () => ws.send(JSON.stringify({ type: "requestAllBikeStatuses" }));
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === "allBikeStatuses") message.bikes.forEach(updateBikeMarker);
-      else if (message.type === "bikeStatusUpdate") updateBikeMarker(message);
-    };
-    ws.onerror = (error) => console.error("Mapa: Erro no WebSocket:", error);
-    function stopScanner() {
-      if (html5QrCode && html5QrCode.isScanning) {
-        html5QrCode.stop().then(() => { document.getElementById('qr-scanner-backdrop').style.display = 'none'; }).catch(err => console.error("Erro ao parar scanner:", err));
-      } else { document.getElementById('qr-scanner-backdrop').style.display = 'none'; }
-    }
-    scanButton.addEventListener('click', () => {
-      if (!currentUser.authenticated) { alert("Você precisa estar logado."); return window.location.href = "login.html"; }
-      document.getElementById('qr-scanner-backdrop').style.display = 'flex';
-      html5QrCode = new Html5Qrcode("qr-reader");
-      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 }},
-              (decodedText) => { stopScanner(); window.location.href = decodedText; }, () => {}
-      ).catch(() => { alert(`Erro ao iniciar a câmera.`); stopScanner(); });
-    });
-    async function checkAuthStatus() {
-      try {
-        const response = await fetch("/check-auth");
-        const data = await response.json();
-        if (data.authenticated) {
-          currentUser.authenticated = true;
-          currentUser.userId = data.userId;
-          authButton.textContent = "Sair";
-        } else {
-          authButton.textContent = "Entrar";
+
+        document.addEventListener("click", () =>
+          fakeSelects.forEach((select) => select.classList.remove("open"))
+        );
+
+        const authButton = document.getElementById("auth-button");
+        const qrBackdrop = document.getElementById("qr-scanner-backdrop");
+        const scanButton = document.getElementById("scan-qr-button");
+        const closeButton = document.getElementById("qr-reader-close-button");
+        const bikeQrModal = document.getElementById("bike-qr-modal");
+        const bikeQrModalBackdrop = document.getElementById(
+          "bike-qr-modal-backdrop"
+        );
+        const bikeQrModalClose = document.getElementById("bike-qr-modal-close");
+        let html5QrCode = null;
+
+        const createInstitutionIcon = () =>
+          L.divIcon({
+            html: '<i class="fas fa-school"></i>',
+            className: "institution-marker-icon",
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+
+        const institutions = [
+          {
+            name: "FATEC Praia Grande (Boqueirão)",
+            lat: -24.0051312,
+            lon: -46.4120406,
+          },
+          {
+            name: "FATEC Santos (Rubens Lara)",
+            lat: -23.9432351,
+            lon: -46.3290929,
+          },
+          {
+            name: "ETEC São Vicente (Dr. Ruth Cardoso)",
+            lat: -23.96507,
+            lon: -46.383774,
+          },
+          {
+            name: "ETEC Praia Grande (Guilermina)",
+            lat: -24.008444,
+            lon: -46.435356,
+          },
+          {
+            name: "ETEC de Santos (Aristóteles Ferreira)",
+            lat: -23.979627,
+            lon: -46.309542,
+          },
+        ];
+        institutions.forEach((inst) =>
+          L.marker([inst.lat, inst.lon], { icon: createInstitutionIcon() })
+            .addTo(map)
+            .bindPopup(`<b>${inst.name}</b>`)
+        );
+
+        const createBikeIcon = (status) => {
+          let className = "bike-icon-disponivel";
+          if (status === "em_uso") className = "bike-icon-em_uso";
+          else if (status === "manutencao") className = "bike-icon-manutencao";
+          return L.divIcon({
+            html: '<i class="fas fa-bicycle"></i>',
+            className: `bike-marker-icon ${className}`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+        };
+
+        function updateBikeMarker(bikeData) {
+          const userIdOnBike = bikeData.user_id_current;
+          let popupContent = `<b>${
+            bikeData.name
+          }</b><br>Status: ${bikeData.status.replace("_", " ")}`;
+          if (bikeData.status === "disponivel" && currentUser.authenticated) {
+            popupContent += `<br><br><button class="popup-button" onclick="showBikeQrCode('${bikeData.id}')">Iniciar Aluguel</button>`;
+          } else if (
+            bikeData.status === "em_uso" &&
+            userIdOnBike === currentUser.userId
+          ) {
+            popupContent += `<br><i>(Esta bicicleta está em uso por você)</i>`;
+          } else if (bikeData.status === "em_uso") {
+            popupContent += `<br><i>(Em uso por outro usuário)</i>`;
+          }
+          let marker = markers.get(bikeData.id);
+          if (marker) {
+            marker.setIcon(createBikeIcon(bikeData.status));
+            marker.setPopupContent(popupContent);
+            marker.options.bikeData = bikeData;
+          } else {
+            marker = L.marker([bikeData.location.lat, bikeData.location.lon], {
+              icon: createBikeIcon(bikeData.status),
+              bikeData: bikeData,
+            })
+              .addTo(map)
+              .bindPopup(popupContent);
+            markers.set(bikeData.id, marker);
+          }
         }
-        if (ws.readyState === WebSocket.OPEN) {
+
+        const ws = new ReconnectingWebSocket(
+          `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${
+            window.location.host
+          }`
+        );
+        ws.onopen = () =>
           ws.send(JSON.stringify({ type: "requestAllBikeStatuses" }));
+        ws.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          if (message.type === "allBikeStatuses")
+            message.bikes.forEach(updateBikeMarker);
+          else if (message.type === "bikeStatusUpdate")
+            updateBikeMarker(message);
+        };
+        ws.onerror = (error) =>
+          console.error("Mapa: Erro no WebSocket:", error);
+
+        function stopScanner() {
+          if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode
+              .stop()
+              .then(() => {
+                document.getElementById("qr-scanner-backdrop").style.display =
+                  "none";
+              })
+              .catch((err) => console.error("Erro ao parar scanner:", err));
+          } else {
+            document.getElementById("qr-scanner-backdrop").style.display =
+              "none";
+          }
         }
-      } catch (error) { console.error("Erro ao verificar autenticação:", error); }
-    }
-    async function logout() {
-      try {
-        const response = await fetch("/logout", { method: "POST" });
-        if (response.ok) window.location.reload();
-        else alert("Erro ao fazer logout");
-      } catch (error) { console.error("Erro ao fazer logout:", error); }
-    }
-    authButton.onclick = () => (authButton.textContent === "Sair" ? logout() : window.location.href = "login.html");
-    closeButton.addEventListener('click', stopScanner);
-    qrBackdrop.addEventListener('click', (e) => { if (e.target === qrBackdrop) stopScanner(); });
-    bikeQrModalClose.onclick = () => { bikeQrModal.style.display = 'none'; bikeQrModalBackdrop.style.display = 'none'; };
-    bikeQrModalBackdrop.onclick = bikeQrModalClose.onclick;
-    document.querySelector(".menu-toggle").addEventListener("click", () => document.querySelector(".nav-center").classList.toggle("active"));
-    checkAuthStatus();
-  });
-</script>
-</body>
+
+        scanButton.addEventListener("click", () => {
+          if (!currentUser.authenticated) {
+            alert("Você precisa estar logado.");
+            return (window.location.href = "login.html");
+          }
+          document.getElementById("qr-scanner-backdrop").style.display = "flex";
+          html5QrCode = new Html5Qrcode("qr-reader");
+          html5QrCode
+            .start(
+              { facingMode: "environment" },
+              { fps: 10, qrbox: { width: 250, height: 250 } },
+              (decodedText) => {
+                stopScanner();
+                window.location.href = decodedText;
+              },
+              () => {}
+            )
+            .catch(() => {
+              alert(`Erro ao iniciar a câmera.`);
+              stopScanner();
+            });
+        });
+
+        async function checkAuthStatus() {
+          try {
+            const response = await fetch("/check-auth");
+            const data = await response.json();
+            if (data.authenticated) {
+              currentUser.authenticated = true;
+              currentUser.userId = data.userId;
+              authButton.textContent = "Sair";
+            } else {
+              authButton.textContent = "Entrar";
+            }
+            if (ws.readyState === WebSocket.OPEN) {
+              ws.send(JSON.stringify({ type: "requestAllBikeStatuses" }));
+            }
+          } catch (error) {
+            console.error("Erro ao verificar autenticação:", error);
+          }
+        }
+
+        async function logout() {
+          try {
+            const response = await fetch("/logout", { method: "POST" });
+            if (response.ok) window.location.reload();
+            else alert("Erro ao fazer logout");
+          } catch (error) {
+            console.error("Erro ao fazer logout:", error);
+          }
+        }
+
+        authButton.onclick = () =>
+          authButton.textContent === "Sair"
+            ? logout()
+            : (window.location.href = "login.html");
+        closeButton.addEventListener("click", stopScanner);
+        qrBackdrop.addEventListener("click", (e) => {
+          if (e.target === qrBackdrop) stopScanner();
+        });
+        bikeQrModalClose.onclick = () => {
+          bikeQrModal.style.display = "none";
+          bikeQrModalBackdrop.style.display = "none";
+        };
+        bikeQrModalBackdrop.onclick = bikeQrModalClose.onclick;
+        document
+          .querySelector(".menu-toggle")
+          .addEventListener("click", () =>
+            document.querySelector(".nav-center").classList.toggle("active")
+          );
+        checkAuthStatus();
+      });
+    </script>
+  </body>
 </html>

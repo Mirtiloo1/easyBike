@@ -23,7 +23,7 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "easybike_db",
-  password: "Cleison23!08",
+  password: "3323",
   port: 5432,
 });
 pool.on("connect", () => console.log("Conectado ao banco de dados PostgreSQL."));
@@ -32,7 +32,7 @@ pool.on("error", (err) => console.error("Erro no banco de dados:", err.stack));
 // Configuração da Sessão
 app.use(
     session({
-      secret: "sua-chave-secreta-super-segura-12345", // Troque por uma chave mais segura
+      secret: "1a2b3c4e5f", // Troque por uma chave mais segura
       resave: false,
       saveUninitialized: true, // Importante para sessões de novos usuários
       cookie: {
