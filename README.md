@@ -84,10 +84,6 @@ Using **npm**:
 ```bash
 npm start
 
-
 npm test
 
 
-Caso você já saiba o framework de testes que está usando (por exemplo, Jest), substitua `{test_framework}` pelo nome correto.
-
-Se quiser, posso inserir esse conteúdo diretamente no seu `README.md`. Deseja isso?
